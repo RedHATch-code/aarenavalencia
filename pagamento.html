@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arena Gaming Valencia | Pagamento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="logo" href="index.html">ARENA <span>VALENCIA</span></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+    <nav id="mainNav">
+      <a href="index.html">Home</a>
+      <a href="loja.html" class="active">Loja</a>
+      <a href="reservas.html">Reservas</a>
+      <a href="contactos.html">Contactos</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">Checkout</p>
+      <h1>Finalizar Compra</h1>
+      <p class="lead">Escolhe o método de pagamento e conclui a encomenda.</p>
+    </section>
+
+    <section class="section">
+      <div class="grid-2">
+        <article class="card">
+          <h3>Resumo da compra</h3>
+          <div id="checkoutItems" class="cart-items"></div>
+          <p>Total: <strong id="checkoutTotal">0,00 €</strong></p>
+        </article>
+
+        <article class="card">
+          <h3>Métodos de pagamento</h3>
+          <div class="pay-methods">
+            <button class="btn btn-primary" id="payStripeBtn" type="button">Pagar com Stripe</button>
+            <button class="btn btn-ghost" id="payPaypalBtn" type="button">Pagar com PayPal</button>
+            <button class="btn btn-pink" id="payMbwayBtn" type="button">Pagar por MB Way</button>
+          </div>
+          <p id="mbwayInfo" class="lead"></p>
+          <p id="checkoutStatus" class="lead"></p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div><h3>Arena Gaming Valencia</h3><p>Checkout seguro da loja.</p></div>
+      <div><h3>Loja</h3><p><a href="loja.html">Voltar aos produtos</a></p></div>
+      <div><h3>Suporte</h3><p>payments@arenavalencia.gg</p></div>
+    </div>
+  </footer>
+
+  <script src="env.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+

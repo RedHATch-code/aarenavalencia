@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arena Gaming Valencia | Loja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="logo" href="index.html">ARENA <span>VALENCIA</span></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+    <nav id="mainNav">
+      <a href="index.html">Home</a>
+      <a href="servicos.html">Serviços</a>
+      <a href="setup.html">PCs & Setup</a>
+      <a href="eventos.html">Eventos</a>
+      <a href="reservas.html">Reservas</a>
+      <a href="loja.html" class="active">Loja</a>
+      <a href="galeria.html">Galeria</a>
+      <a href="sobre.html">Sobre Nós</a>
+      <a href="contactos.html">Contactos</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">Store Arena</p>
+      <h1>Loja Gamer</h1>
+      <p class="lead">Merch oficial, periféricos e packs para a comunidade Arena Gaming Valencia.</p>
+    </section>
+
+    <section class="section">
+      <div id="shopProducts" class="grid-3 shop-grid">
+        <article class="card product-card">
+          <div class="product-photo shot shot-1"></div>
+          <h3>Camisola Arena Pro</h3>
+          <p>Merch oficial em tecido técnico respirável.</p>
+          <p class="price">29,90 €</p>
+          <button class="btn btn-primary" data-add-to-cart data-id="camisola-arena-pro" data-name="Camisola Arena Pro" data-price="29.90">Adicionar ao carrinho</button>
+        </article>
+
+        <article class="card product-card">
+          <div class="product-photo shot shot-2"></div>
+          <h3>Mousepad XL RGB</h3>
+          <p>Superfície speed/control para jogos competitivos.</p>
+          <p class="price">24,90 €</p>
+          <button class="btn btn-primary" data-add-to-cart data-id="mousepad-xl-rgb" data-name="Mousepad XL RGB" data-price="24.90">Adicionar ao carrinho</button>
+        </article>
+
+        <article class="card product-card">
+          <div class="product-photo shot shot-3"></div>
+          <h3>Pack 5h Arena</h3>
+          <p>Voucher para 5 horas de jogo em setup premium.</p>
+          <p class="price">39,90 €</p>
+          <button class="btn btn-primary" data-add-to-cart data-id="pack-5h-arena" data-name="Pack 5h Arena" data-price="39.90">Adicionar ao carrinho</button>
+        </article>
+
+        <article class="card product-card">
+          <div class="product-photo shot shot-4"></div>
+          <h3>Headset Arena Voice</h3>
+          <p>Som surround e microfone focado em esports.</p>
+          <p class="price">59,90 €</p>
+          <button class="btn btn-primary" data-add-to-cart data-id="headset-arena-voice" data-name="Headset Arena Voice" data-price="59.90">Adicionar ao carrinho</button>
+        </article>
+
+        <article class="card product-card">
+          <div class="product-photo shot shot-5"></div>
+          <h3>T-Shirt Community</h3>
+          <p>Edição limitada da comunidade Valencia.</p>
+          <p class="price">19,90 €</p>
+          <button class="btn btn-primary" data-add-to-cart data-id="tshirt-community" data-name="T-Shirt Community" data-price="19.90">Adicionar ao carrinho</button>
+        </article>
+
+        <article class="card product-card">
+          <div class="product-photo shot shot-6"></div>
+          <h3>Pack Team Building</h3>
+          <p>Voucher para evento privado de equipa.</p>
+          <p class="price">149,00 €</p>
+          <button class="btn btn-primary" data-add-to-cart data-id="pack-team-building" data-name="Pack Team Building" data-price="149.00">Adicionar ao carrinho</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <article class="card cart-box">
+        <h2>Carrinho</h2>
+        <p class="lead">Revê os teus produtos antes de finalizar.</p>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-actions">
+          <p>Total: <strong id="cartTotal">0,00 €</strong></p>
+          <button class="btn btn-ghost" id="clearCartBtn" type="button">Limpar carrinho</button>
+          <button class="btn btn-pink" id="checkoutBtn" type="button">Ir para pagamento</button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div><h3>Arena Gaming Valencia</h3><p>Loja oficial para gamers e comunidade.</p></div>
+      <div><h3>Links</h3><p><a href="reservas.html">Reservas</a></p><p><a href="faq.html">FAQ</a></p></div>
+      <div><h3>Suporte</h3><p>store@arenavalencia.gg</p></div>
+    </div>
+  </footer>
+
+  <script src="env.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
