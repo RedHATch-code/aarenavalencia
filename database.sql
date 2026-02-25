@@ -543,3 +543,142 @@ values
   ('Mousepad XL RGB', 'Superfície speed/control para jogos competitivos.', 24.90, null, 80, true),
   ('Pack 5h Arena', 'Voucher para 5 horas de jogo em setup premium.', 39.90, null, 120, true)
 on conflict do nothing;
+
+-- =========================
+-- Security hardening (gglea.com + anti-escalation)
+-- =========================
+
+create table if not exists public.admin_whitelist (
+  email text primary key,
+  created_at timestamptz not null default now()
+);
+
+create or replace function public.is_admin(uid uuid)
+returns boolean
+language sql
+stable
+as $$
+  select exists (
+    select 1
+    from public.profiles p
+    left join auth.users u on u.id = p.id
+    left join public.admin_whitelist w on lower(w.email) = lower(u.email)
+    where p.id = uid
+      and (
+        p.role in ('admin', 'staff')
+        or w.email is not null
+      )
+  );
+$$;
+
+create or replace function public.enforce_profile_security()
+returns trigger
+language plpgsql
+security definer
+as $$
+declare
+  actor uuid;
+  actor_is_admin boolean;
+  email_domain text;
+begin
+  actor := auth.uid();
+  actor_is_admin := public.is_admin(actor);
+
+  -- Force new non-admin users to player role
+  if tg_op = 'INSERT' then
+    if not actor_is_admin then
+      new.role := 'player';
+    end if;
+
+    -- If email exists, enforce gglea.com domain
+    if new.id is not null then
+      select split_part(lower(u.email), '@', 2)
+      into email_domain
+      from auth.users u
+      where u.id = new.id;
+
+      if email_domain is not null and email_domain <> 'gglea.com' and not actor_is_admin then
+        raise exception 'Solo se permiten cuentas @gglea.com';
+      end if;
+    end if;
+
+    return new;
+  end if;
+
+  -- Prevent privilege escalation by non-admins
+  if tg_op = 'UPDATE' then
+    if new.role <> old.role and not actor_is_admin then
+      raise exception 'No autorizado para cambiar role';
+    end if;
+
+    if new.id <> old.id and not actor_is_admin then
+      raise exception 'No autorizado';
+    end if;
+
+    return new;
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_profiles_security on public.profiles;
+create trigger trg_profiles_security
+before insert or update on public.profiles
+for each row
+execute function public.enforce_profile_security();
+
+-- Restrict event creation/updates to admins/staff only
+drop policy if exists "events_auth_insert" on public.events;
+drop policy if exists "events_owner_update" on public.events;
+drop policy if exists "events_admin_insert" on public.events;
+drop policy if exists "events_admin_update" on public.events;
+
+create policy "events_admin_insert"
+on public.events
+for insert
+to authenticated
+with check (public.is_admin(auth.uid()));
+
+create policy "events_admin_update"
+on public.events
+for update
+to authenticated
+using (public.is_admin(auth.uid()))
+with check (public.is_admin(auth.uid()));
+
+create policy "events_admin_delete"
+on public.events
+for delete
+to authenticated
+using (public.is_admin(auth.uid()));
+
+-- Optional: keep this updated with allowed admins by email
+-- insert into public.admin_whitelist(email) values ('admin@gglea.com') on conflict do nothing;
+
+-- =========================
+-- User source + classification helper
+-- =========================
+alter table public.profiles
+add column if not exists source text not null default 'local'
+check (source in ('local', 'ggcircuit_portal', 'ggleap_admin', 'manual_admin', 'csv_import'));
+
+create or replace function public.user_kind(role_value text)
+returns text
+language sql
+immutable
+as $$
+  select case
+    when role_value in ('admin', 'staff') then 'worker'
+    else 'client'
+  end;
+$$;
+
+-- Normalização de origem para registos antigos
+update public.profiles
+set source = 'local'
+where source is null;
+
+-- Exemplo para imports vindos do portal
+-- update public.profiles set source = 'ggcircuit_portal' where id in (...);
+-- update public.profiles set source = 'ggleap_admin' where role in ('admin','staff');

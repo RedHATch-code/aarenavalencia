@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia: centro de esports y entretenimiento digital. PCs de alto rendimiento, torneos semanales, eventos privados y streaming." />
   <title>Arena Gaming Valencia | Inicio</title>
-  <meta name="description" content="Arena Gaming Valencia: tu espacio gaming profesional en Valencia." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
@@ -13,19 +14,18 @@
 <body>
   <div class="bg-grid" aria-hidden="true"></div>
   <header class="topbar">
-    <a class="logo" href="index.html">ARENA <span>VALENCIA</span></a>
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
     <div class="lang-switch">
-      <label for="languageSelect">Idioma</label>
       <select id="languageSelect" aria-label="Seleccionar idioma">
         <option value="es_cast" selected>Castellano</option>
         <option value="pt">Português</option>
-        <option value="en">Inglés</option>
-        <option value="es_latam">Español</option>
-        <option value="ru">Ruso</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
       </select>
     </div>
-    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">☰</button>
-    <nav id="mainNav">
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
       <a href="index.html" class="active" data-i18n="nav_home">Inicio</a>
       <a href="servicos.html" data-i18n="nav_services">Servicios</a>
       <a href="setup.html" data-i18n="nav_setup">PCs & Setup</a>
@@ -35,7 +35,7 @@
       <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
       <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
       <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
-      <a href="login.html" data-i18n="nav_login">Login</a>
+      <a href="login.html" data-i18n="nav_login" id="navLoginLink">Login</a>
     </nav>
   </header>
 
@@ -65,10 +65,22 @@
     <section class="section reveal">
       <h2 data-i18n="services_title">Servicios Principales</h2>
       <div class="grid-4">
-        <article class="card"><h3 data-i18n="service_1_title">PCs Gaming</h3><p data-i18n="service_1_text">Estaciones con alta tasa de refresco y baja latencia para entrenamiento y competición.</p></article>
-        <article class="card"><h3 data-i18n="service_2_title">Torneos</h3><p data-i18n="service_2_text">Competiciones de esports con estructura profesional y calendario mensual.</p></article>
-        <article class="card"><h3 data-i18n="service_3_title">Streaming</h3><p data-i18n="service_3_text">Espacio preparado para creadores de contenido y emisiones locales.</p></article>
-        <article class="card"><h3 data-i18n="service_4_title">Eventos Privados</h3><p data-i18n="service_4_text">Reserva del espacio para cumpleaños, equipos y team building gaming.</p></article>
+        <article class="card">
+          <h3 data-i18n="service_1_title">PCs Gaming</h3>
+          <p data-i18n="service_1_text">Estaciones con alta tasa de refresco y baja latencia para entrenamiento y competición.</p>
+        </article>
+        <article class="card">
+          <h3 data-i18n="service_2_title">Torneos</h3>
+          <p data-i18n="service_2_text">Competiciones de esports con estructura profesional y calendario mensual.</p>
+        </article>
+        <article class="card">
+          <h3 data-i18n="service_3_title">Streaming</h3>
+          <p data-i18n="service_3_text">Espacio preparado para creadores de contenido y emisiones locales.</p>
+        </article>
+        <article class="card">
+          <h3 data-i18n="service_4_title">Eventos Privados</h3>
+          <p data-i18n="service_4_text">Reserva del espacio para cumpleaños, equipos y team building gaming.</p>
+        </article>
       </div>
     </section>
 
@@ -96,26 +108,43 @@
         <article class="card"><p class="tag" data-i18n="event_tag_2">Sábado</p><h3>Community Cup</h3><p data-i18n="event_text_2">Torneo abierto para la comunidad y equipos en formación.</p></article>
         <article class="card"><p class="tag" data-i18n="event_tag_3">Domingo</p><h3>Open Free Play</h3><p data-i18n="event_text_3">Sesiones libres con desafíos por objetivos y mini rankings.</p></article>
       </div>
-      <div class="cta-row"><a class="btn btn-primary" href="eventos.html" data-i18n="events_cta">Calendario Completo</a></div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="eventos.html" data-i18n="events_cta">Calendario Completo</a>
+      </div>
     </section>
 
     <section class="section reveal">
       <h2 data-i18n="gallery_title">Galería Rápida</h2>
       <div class="gallery">
-        <div class="shot shot-1"></div>
-        <div class="shot shot-2"></div>
-        <div class="shot shot-3"></div>
-        <div class="shot shot-4"></div>
+        <div class="shot shot-1" role="img" aria-label="Arena Gaming Valencia — imagen 1"></div>
+        <div class="shot shot-2" role="img" aria-label="Arena Gaming Valencia — imagen 2"></div>
+        <div class="shot shot-3" role="img" aria-label="Arena Gaming Valencia — imagen 3"></div>
+        <div class="shot shot-4" role="img" aria-label="Arena Gaming Valencia — imagen 4"></div>
       </div>
-      <div class="cta-row"><a class="btn btn-ghost" href="galeria.html" data-i18n="gallery_cta">Ver Galería Completa</a></div>
+      <div class="cta-row">
+        <a class="btn btn-ghost" href="galeria.html" data-i18n="gallery_cta">Ver Galería Completa</a>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="footer-grid">
-      <div><h3>Arena Gaming Valencia</h3><p data-i18n="footer_text">Gaming competitivo, comunidad fuerte y experiencias inmersivas en Valencia.</p></div>
-      <div><h3 data-i18n="footer_links">Enlaces</h3><p><a href="reservas.html" data-i18n="footer_book">Reservas</a></p><p><a href="blog.html" data-i18n="footer_blog">Blog</a></p><p><a href="faq.html">FAQ</a></p></div>
-      <div><h3 data-i18n="footer_contact">Contacto</h3><p>Calle Jerónima Galés 45</p><p>contacto@arenavalencia.gg</p><p>+34 960 000 000</p></div>
+      <div>
+        <h3>Arena Gaming Valencia</h3>
+        <p data-i18n="footer_text">Gaming competitivo, comunidad fuerte y experiencias inmersivas en Valencia.</p>
+      </div>
+      <div>
+        <h3 data-i18n="footer_links">Enlaces</h3>
+        <p><a href="reservas.html" data-i18n="footer_book">Reservas</a></p>
+        <p><a href="blog.html" data-i18n="footer_blog">Blog</a></p>
+        <p><a href="faq.html">FAQ</a></p>
+      </div>
+      <div>
+        <h3 data-i18n="footer_contact">Contacto</h3>
+        <p>Calle Jerónima Galés 45</p>
+        <p>contacto@arenavalencia.gg</p>
+        <p>+34 960 000 000</p>
+      </div>
     </div>
   </footer>
 
@@ -124,6 +153,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
-

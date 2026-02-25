@@ -1,27 +1,106 @@
-﻿<!DOCTYPE html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia — Especificações dos PCs e setup competitivo. RTX 4070, 240Hz, 32GB DDR5." />
   <title>Arena Gaming Valencia | PCs & Setup</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <header class="topbar"><a class="logo" href="index.html">ARENA <span>VALENCIA</span></a><button class="menu-btn" id="menuBtn">☰</button><nav id="mainNav"><a href="index.html">Home</a><a href="servicos.html">Serviços</a><a href="setup.html" class="active">PCs & Setup</a><a href="eventos.html">Eventos</a><a href="reservas.html">Reservas</a><a href="loja.html">Loja</a><a href="galeria.html">Galeria</a><a href="sobre.html">Sobre Nós</a><a href="contactos.html">Contactos</a><a href="login.html">Login</a></nav></header>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
+    <div class="lang-switch">
+      <select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast" selected>Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="servicos.html" data-i18n="nav_services">Servicios</a>
+      <a href="setup.html" class="active" data-i18n="nav_setup">PCs & Setup</a>
+      <a href="eventos.html" data-i18n="nav_events">Eventos</a>
+      <a href="reservas.html" data-i18n="nav_booking">Reservas</a>
+      <a href="loja.html" data-i18n="nav_store">Tienda</a>
+      <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
+      <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
+      <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
+      <a href="login.html" data-i18n="nav_login" id="navLoginLink">Login</a>
+    </nav>
+  </header>
+
   <main class="page-wrap">
-    <section class="page-hero"><p class="eyebrow">Credibilidade técnica</p><h1>PCs & Setup Competitivo</h1><p class="lead">Infraestrutura pensada para treino sério, torneio e criação de conteúdo com consistência de performance.</p></section>
-    <section class="section"><div class="table-wrap"><table><thead><tr><th>Componente</th><th>Especificação</th><th>Benefício</th></tr></thead><tbody><tr><td>CPU</td><td>Intel i7 / Ryzen 7</td><td>Frames estáveis em jogos competitivos</td></tr><tr><td>GPU</td><td>RTX 4070 class</td><td>Alta taxa de FPS e baixa latência</td></tr><tr><td>RAM</td><td>32GB DDR5</td><td>Multitarefa e streaming sem travar</td></tr><tr><td>Monitor</td><td>240Hz 1ms</td><td>Resposta rápida em situações críticas</td></tr><tr><td>Periféricos</td><td>Teclado mecânico + mouse esports</td><td>Precisão e conforto</td></tr></tbody></table></div></section>
-    <section class="section"><div class="grid-2"><article class="card"><h3>Benefícios para jogadores competitivos</h3><ul class="checklist"><li>Consistência entre sessões</li><li>Tempo de resposta otimizado</li><li>Ergonomia para longas horas</li><li>Ambiente silencioso e focado</li></ul></article><div class="gallery"><div class="shot shot-1"></div><div class="shot shot-5"></div><div class="shot shot-2"></div><div class="shot shot-6"></div></div></div></section>
+    <section class="page-hero">
+      <p class="eyebrow">Credibilidade técnica</p>
+      <h1>PCs & Setup Competitivo</h1>
+      <p class="lead">Infraestrutura pensada para treino sério, torneio e criação de conteúdo com consistência de performance.</p>
+    </section>
+
+    <section class="section reveal">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>Especificação</th>
+              <th>Benefício</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>CPU</td><td>Intel i7 / Ryzen 7</td><td>Frames estáveis em jogos competitivos</td></tr>
+            <tr><td>GPU</td><td>RTX 4070 class</td><td>Alta taxa de FPS e baixa latência</td></tr>
+            <tr><td>RAM</td><td>32 GB DDR5</td><td>Multitarefa e streaming sem travagens</td></tr>
+            <tr><td>Monitor</td><td>240 Hz — 1 ms</td><td>Resposta rápida em situações críticas</td></tr>
+            <tr><td>Periféricos</td><td>Teclado mecânico + rato esports</td><td>Precisão e conforto prolongado</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid-2">
+        <article class="card">
+          <h3>Benefícios para jogadores competitivos</h3>
+          <ul class="checklist">
+            <li>Consistência entre sessões</li>
+            <li>Tempo de resposta otimizado</li>
+            <li>Ergonomia para longas horas</li>
+            <li>Ambiente silencioso e focado</li>
+          </ul>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="reservas.html">Reservar setup</a>
+          </div>
+        </article>
+        <div class="gallery" style="grid-template-columns: repeat(2,1fr);">
+          <div class="shot shot-1" role="img" aria-label="Setup Arena — foto 1"></div>
+          <div class="shot shot-5" role="img" aria-label="Setup Arena — foto 2"></div>
+          <div class="shot shot-2" role="img" aria-label="Setup Arena — foto 3"></div>
+          <div class="shot shot-6" role="img" aria-label="Setup Arena — foto 4"></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer"><div class="footer-grid"><div><h3>Arena Gaming Valencia</h3><p>Qualidade técnica ao nível competitivo.</p></div><div><h3>Links</h3><p><a href="reservas.html">Reservas</a></p></div><div><h3>Morada</h3><p>Calle Jerónima Galés 45</p></div></div></footer>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div><h3>Arena Gaming Valencia</h3><p>Qualidade técnica ao nível competitivo.</p></div>
+      <div><h3>Links</h3><p><a href="reservas.html">Reservas</a></p><p><a href="servicos.html">Serviços</a></p></div>
+      <div><h3>Morada</h3><p>Calle Jerónima Galés 45</p></div>
+    </div>
+  </footer>
+
   <script src="env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
-
-

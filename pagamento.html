@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia — Checkout. Finaliza a tua compra com Stripe, PayPal ou MB Way." />
   <title>Arena Gaming Valencia | Pagamento</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
@@ -12,14 +14,28 @@
 <body>
   <div class="bg-grid" aria-hidden="true"></div>
   <header class="topbar">
-    <a class="logo" href="index.html">ARENA <span>VALENCIA</span></a>
-    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
-    <nav id="mainNav">
-      <a href="index.html">Home</a>
-      <a href="loja.html" class="active">Loja</a>
-      <a href="reservas.html">Reservas</a>
-      <a href="contactos.html">Contactos</a>
-      <a href="login.html">Login</a>
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
+    <div class="lang-switch">
+      <select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast" selected>Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="servicos.html" data-i18n="nav_services">Servicios</a>
+      <a href="setup.html" data-i18n="nav_setup">PCs & Setup</a>
+      <a href="eventos.html" data-i18n="nav_events">Eventos</a>
+      <a href="reservas.html" data-i18n="nav_booking">Reservas</a>
+      <a href="loja.html" class="active" data-i18n="nav_store">Tienda</a>
+      <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
+      <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
+      <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
+      <a href="login.html" data-i18n="nav_login" id="navLoginLink">Login</a>
     </nav>
   </header>
 
@@ -27,15 +43,18 @@
     <section class="page-hero">
       <p class="eyebrow">Checkout</p>
       <h1>Finalizar Compra</h1>
-      <p class="lead">Escolhe o método de pagamento e conclui a encomenda.</p>
+      <p class="lead">Escolhe o método de pagamento e conclui a encomenda de forma segura.</p>
     </section>
 
-    <section class="section">
+    <section class="section reveal">
       <div class="grid-2">
         <article class="card">
           <h3>Resumo da compra</h3>
           <div id="checkoutItems" class="cart-items"></div>
-          <p>Total: <strong id="checkoutTotal">0,00 €</strong></p>
+          <p style="margin-top:0.8rem">Total: <strong id="checkoutTotal">0,00 €</strong></p>
+          <div class="cta-row" style="margin-top:0.5rem">
+            <a class="btn btn-ghost" href="loja.html">← Voltar à loja</a>
+          </div>
         </article>
 
         <article class="card">
@@ -45,7 +64,7 @@
             <button class="btn btn-ghost" id="payPaypalBtn" type="button">Pagar com PayPal</button>
             <button class="btn btn-pink" id="payMbwayBtn" type="button">Pagar por MB Way</button>
           </div>
-          <p id="mbwayInfo" class="lead"></p>
+          <p id="mbwayInfo" class="lead" style="margin-top:0.8rem"></p>
           <p id="checkoutStatus" class="lead"></p>
         </article>
       </div>
@@ -54,7 +73,7 @@
 
   <footer class="site-footer">
     <div class="footer-grid">
-      <div><h3>Arena Gaming Valencia</h3><p>Checkout seguro da loja.</p></div>
+      <div><h3>Arena Gaming Valencia</h3><p>Checkout seguro da loja oficial.</p></div>
       <div><h3>Loja</h3><p><a href="loja.html">Voltar aos produtos</a></p></div>
       <div><h3>Suporte</h3><p>payments@arenavalencia.gg</p></div>
     </div>
@@ -65,4 +84,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-

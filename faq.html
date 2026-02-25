@@ -1,33 +1,101 @@
-﻿<!DOCTYPE html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia — Perguntas frequentes sobre reservas, preços, horários e eventos." />
   <title>Arena Gaming Valencia | FAQ</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" /><link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="bg-grid"></div>
-<header class="topbar"><a class="logo" href="index.html">ARENA <span>VALENCIA</span></a><button class="menu-btn" id="menuBtn">☰</button><nav id="mainNav"><a href="index.html">Home</a><a href="servicos.html">Serviços</a><a href="setup.html">PCs & Setup</a><a href="eventos.html">Eventos</a><a href="reservas.html">Reservas</a><a href="loja.html">Loja</a><a href="galeria.html">Galeria</a><a href="sobre.html">Sobre Nós</a><a href="contactos.html">Contactos</a><a href="login.html">Login</a></nav></header>
-<main class="page-wrap">
-  <section class="page-hero"><p class="eyebrow">Perguntas frequentes</p><h1>FAQ</h1><p class="lead">Respostas rápidas para reduzir dúvidas e aumentar conversão nas reservas.</p></section>
-  <section class="section">
-    <div class="grid-2">
-      <article class="faq-item"><button>Como reservar um PC?</button><p>Vai à página de reservas, escolhe o posto, data, horário e duração. Recebes confirmação por email.</p></article>
-      <article class="faq-item"><button>Existe idade mínima?</button><p>Menores podem entrar com autorização do encarregado de educação, conforme política local.</p></article>
-      <article class="faq-item"><button>Posso levar equipa completa?</button><p>Sim. Temos packs para equipas e também reserva de sala privada para treino e estratégia.</p></article>
-      <article class="faq-item"><button>Que métodos de pagamento aceitam?</button><p>Cartão, MB Way equivalente, numerário e pagamentos online para alguns eventos.</p></article>
-      <article class="faq-item"><button>Há preços para empresas?</button><p>Sim. Fazemos propostas de team building gaming com formato personalizado.</p></article>
-      <article class="faq-item"><button>Posso cancelar ou reagendar?</button><p>Podes reagendar com antecedência. As condições exatas aparecem no email de confirmação.</p></article>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
+    <div class="lang-switch">
+      <select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast" selected>Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>
     </div>
-  </section>
-</main>
-<footer class="site-footer"><div class="footer-grid"><div><h3>Arena Gaming Valencia</h3><p>Ajuda rápida para jogadores e equipas.</p></div><div><h3>Mais apoio</h3><p><a href="contactos.html">Contactar suporte</a></p></div><div><h3>Email</h3><p>help@arenavalencia.gg</p></div></div></footer>
-<script src="env.js"></script>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="servicos.html" data-i18n="nav_services">Servicios</a>
+      <a href="setup.html" data-i18n="nav_setup">PCs & Setup</a>
+      <a href="eventos.html" data-i18n="nav_events">Eventos</a>
+      <a href="reservas.html" data-i18n="nav_booking">Reservas</a>
+      <a href="loja.html" data-i18n="nav_store">Tienda</a>
+      <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
+      <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
+      <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
+      <a href="login.html" data-i18n="nav_login" id="navLoginLink">Login</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">Perguntas frequentes</p>
+      <h1>FAQ</h1>
+      <p class="lead">Respostas rápidas para as dúvidas mais comuns sobre reservas, eventos e serviços.</p>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid-2">
+        <article class="faq-item">
+          <button aria-expanded="false">Como reservar um PC?</button>
+          <p>Vai à página de reservas, escolhe o posto, data, horário e duração. Recebes confirmação por email.</p>
+        </article>
+        <article class="faq-item">
+          <button aria-expanded="false">Existe idade mínima?</button>
+          <p>Menores podem entrar com autorização do encarregado de educação, conforme política local.</p>
+        </article>
+        <article class="faq-item">
+          <button aria-expanded="false">Posso levar equipa completa?</button>
+          <p>Sim. Temos packs para equipas e também reserva de sala privada para treino e estratégia.</p>
+        </article>
+        <article class="faq-item">
+          <button aria-expanded="false">Que métodos de pagamento aceitam?</button>
+          <p>Cartão, MB Way, numerário e pagamentos online para eventos. Stripe e PayPal disponíveis na loja online.</p>
+        </article>
+        <article class="faq-item">
+          <button aria-expanded="false">Há preços especiais para empresas?</button>
+          <p>Sim. Fazemos propostas de team building gaming com formato personalizado. Contacta-nos para orçamento.</p>
+        </article>
+        <article class="faq-item">
+          <button aria-expanded="false">Posso cancelar ou reagendar?</button>
+          <p>Podes reagendar com antecedência mínima de 24h. As condições exatas aparecem no email de confirmação.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="info-box">
+        <h3>Ainda tens dúvidas?</h3>
+        <p>A nossa equipa está disponível todos os dias. Envia-nos uma mensagem pelo formulário de contacto.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="contactos.html">Contactar suporte</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div><h3>Arena Gaming Valencia</h3><p>Ajuda rápida para jogadores e equipas.</p></div>
+      <div><h3>Mais apoio</h3><p><a href="contactos.html">Contactar suporte</a></p></div>
+      <div><h3>Email</h3><p>help@arenavalencia.gg</p></div>
+    </div>
+  </footer>
+
+  <script src="env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
-
-

@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia — Loja oficial. Merch, periféricos e packs para gamers." />
   <title>Arena Gaming Valencia | Loja</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
@@ -12,19 +14,28 @@
 <body>
   <div class="bg-grid" aria-hidden="true"></div>
   <header class="topbar">
-    <a class="logo" href="index.html">ARENA <span>VALENCIA</span></a>
-    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
-    <nav id="mainNav">
-      <a href="index.html">Home</a>
-      <a href="servicos.html">Serviços</a>
-      <a href="setup.html">PCs & Setup</a>
-      <a href="eventos.html">Eventos</a>
-      <a href="reservas.html">Reservas</a>
-      <a href="loja.html" class="active">Loja</a>
-      <a href="galeria.html">Galeria</a>
-      <a href="sobre.html">Sobre Nós</a>
-      <a href="contactos.html">Contactos</a>
-      <a href="login.html">Login</a>
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
+    <div class="lang-switch">
+      <select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast" selected>Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="servicos.html" data-i18n="nav_services">Servicios</a>
+      <a href="setup.html" data-i18n="nav_setup">PCs & Setup</a>
+      <a href="eventos.html" data-i18n="nav_events">Eventos</a>
+      <a href="reservas.html" data-i18n="nav_booking">Reservas</a>
+      <a href="loja.html" class="active" data-i18n="nav_store">Tienda</a>
+      <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
+      <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
+      <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
+      <a href="login.html" data-i18n="nav_login" id="navLoginLink">Login</a>
     </nav>
   </header>
 
@@ -35,50 +46,45 @@
       <p class="lead">Merch oficial, periféricos e packs para a comunidade Arena Gaming Valencia.</p>
     </section>
 
-    <section class="section">
+    <section class="section reveal">
       <div id="shopProducts" class="grid-3 shop-grid">
         <article class="card product-card">
-          <div class="product-photo shot shot-1"></div>
+          <div class="product-photo shot shot-1" role="img" aria-label="Camisola Arena Pro"></div>
           <h3>Camisola Arena Pro</h3>
           <p>Merch oficial em tecido técnico respirável.</p>
           <p class="price">29,90 €</p>
           <button class="btn btn-primary" data-add-to-cart data-id="camisola-arena-pro" data-name="Camisola Arena Pro" data-price="29.90">Adicionar ao carrinho</button>
         </article>
-
         <article class="card product-card">
-          <div class="product-photo shot shot-2"></div>
+          <div class="product-photo shot shot-2" role="img" aria-label="Mousepad XL RGB"></div>
           <h3>Mousepad XL RGB</h3>
           <p>Superfície speed/control para jogos competitivos.</p>
           <p class="price">24,90 €</p>
           <button class="btn btn-primary" data-add-to-cart data-id="mousepad-xl-rgb" data-name="Mousepad XL RGB" data-price="24.90">Adicionar ao carrinho</button>
         </article>
-
         <article class="card product-card">
-          <div class="product-photo shot shot-3"></div>
+          <div class="product-photo shot shot-3" role="img" aria-label="Pack 5h Arena"></div>
           <h3>Pack 5h Arena</h3>
           <p>Voucher para 5 horas de jogo em setup premium.</p>
           <p class="price">39,90 €</p>
           <button class="btn btn-primary" data-add-to-cart data-id="pack-5h-arena" data-name="Pack 5h Arena" data-price="39.90">Adicionar ao carrinho</button>
         </article>
-
         <article class="card product-card">
-          <div class="product-photo shot shot-4"></div>
+          <div class="product-photo shot shot-4" role="img" aria-label="Headset Arena Voice"></div>
           <h3>Headset Arena Voice</h3>
           <p>Som surround e microfone focado em esports.</p>
           <p class="price">59,90 €</p>
           <button class="btn btn-primary" data-add-to-cart data-id="headset-arena-voice" data-name="Headset Arena Voice" data-price="59.90">Adicionar ao carrinho</button>
         </article>
-
         <article class="card product-card">
-          <div class="product-photo shot shot-5"></div>
+          <div class="product-photo shot shot-5" role="img" aria-label="T-Shirt Community"></div>
           <h3>T-Shirt Community</h3>
           <p>Edição limitada da comunidade Valencia.</p>
           <p class="price">19,90 €</p>
           <button class="btn btn-primary" data-add-to-cart data-id="tshirt-community" data-name="T-Shirt Community" data-price="19.90">Adicionar ao carrinho</button>
         </article>
-
         <article class="card product-card">
-          <div class="product-photo shot shot-6"></div>
+          <div class="product-photo shot shot-6" role="img" aria-label="Pack Team Building"></div>
           <h3>Pack Team Building</h3>
           <p>Voucher para evento privado de equipa.</p>
           <p class="price">149,00 €</p>
@@ -87,7 +93,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section reveal">
       <article class="card cart-box">
         <h2>Carrinho</h2>
         <p class="lead">Revê os teus produtos antes de finalizar.</p>
@@ -114,6 +120,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
-

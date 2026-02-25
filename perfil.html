@@ -1,25 +1,137 @@
-﻿<!DOCTYPE html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia — Área pessoal. Gere o teu perfil, reservas e histórico de sessões." />
   <title>Arena Gaming Valencia | Perfil</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" /><link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="bg-grid"></div>
-<header class="topbar"><a class="logo" href="index.html">ARENA <span>VALENCIA</span></a><button class="menu-btn" id="menuBtn">☰</button><nav id="mainNav"><a href="index.html">Home</a><a href="servicos.html">Serviços</a><a href="setup.html">PCs & Setup</a><a href="eventos.html">Eventos</a><a href="reservas.html">Reservas</a><a href="loja.html">Loja</a><a href="galeria.html">Galeria</a><a href="sobre.html">Sobre Nós</a><a href="contactos.html">Contactos</a><a href="login.html">Login</a></nav></header>
-<main class="page-wrap">
-  <section class="page-hero"><p class="eyebrow">Área pessoal</p><h1>Perfil do Utilizador</h1><p class="lead">Página demo avançada para mostrar gestão de conta e histórico.</p></section>
-  <section class="section"><div class="grid-2"><article class="card"><h3>Dados do Perfil</h3><form data-demo="true" data-message="Perfil atualizado (demo)."><label>Nome</label><input type="text" value="Player Valencia" /><label>Email</label><input type="email" value="player@email.com" /><label>Nickname</label><input type="text" value="ArenaPro" /><button class="btn btn-primary" type="submit">Guardar alterações</button></form></article><article class="card"><h3>Resumo</h3><ul class="checklist"><li>Nível de membro: Gold</li><li>Horas jogadas este mês: 18h</li><li>Torneios inscritos: 3</li><li>Próxima reserva: Sexta 21:00</li></ul></article></div></section>
-  <section class="section"><div class="table-wrap"><table><thead><tr><th>Data</th><th>Sessão</th><th>Duração</th><th>Estado</th></tr></thead><tbody><tr><td>20/02/2026</td><td>PC Arena Pro #03</td><td>2h</td><td>Concluída</td></tr><tr><td>18/02/2026</td><td>Torneio Community Cup</td><td>3h</td><td>Concluída</td></tr><tr><td>16/02/2026</td><td>PC Arena Pro #01</td><td>1h</td><td>Concluída</td></tr></tbody></table></div></section>
-</main>
-<footer class="site-footer"><div class="footer-grid"><div><h3>Arena Gaming Valencia</h3><p>Gestão de reservas e atividade gamer.</p></div><div><h3>Atalhos</h3><p><a href="reservas.html">Nova reserva</a></p></div><div><h3>Conta</h3><p><a href="login.html">Logout (demo)</a></p></div></div></footer>
-<script src="env.js"></script>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
+    <div class="lang-switch">
+      <select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast" selected>Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="servicos.html" data-i18n="nav_services">Servicios</a>
+      <a href="setup.html" data-i18n="nav_setup">PCs & Setup</a>
+      <a href="eventos.html" data-i18n="nav_events">Eventos</a>
+      <a href="reservas.html" data-i18n="nav_booking">Reservas</a>
+      <a href="loja.html" data-i18n="nav_store">Tienda</a>
+      <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
+      <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
+      <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
+      <a href="perfil.html" class="active" id="navLoginLink">Perfil</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">Área pessoal</p>
+      <h1>Perfil do Utilizador</h1>
+      <p class="lead">Gere a tua conta, consulta o histórico e personaliza as tuas preferências.</p>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid-2">
+        <article class="card">
+          <div class="profile-header">
+            <img src="https://i.pravatar.cc/68?u=default" alt="Avatar do utilizador" class="profile-avatar" id="perfilAvatar" />
+            <div>
+              <h3 id="perfilDisplayName">A carregar...</h3>
+              <span class="profile-level">
+                <span id="perfilLevel">Player</span>
+              </span>
+            </div>
+          </div>
+          <form id="perfilForm">
+            <label for="perfilName">Nome</label>
+            <input type="text" id="perfilName" placeholder="O teu nome completo" />
+            <label for="perfilEmail">Email</label>
+            <input type="email" id="perfilEmail" readonly placeholder="email@exemplo.com" />
+            <label for="perfilNickname">Nickname</label>
+            <input type="text" id="perfilNickname" placeholder="O teu nick gamer" />
+            <button class="btn btn-primary" type="submit">Guardar alterações</button>
+            <button class="btn btn-ghost" type="button" id="logoutBtn">Terminar sessão</button>
+          </form>
+        </article>
+
+        <article class="card">
+          <h3>Resumo da conta</h3>
+          <ul class="checklist">
+            <li>Nível: <span id="perfilLevelBadge">—</span></li>
+            <li>Horas este mês: <span id="perfilHours">—</span></li>
+            <li>Torneios inscritos: <span id="perfilTournaments">—</span></li>
+            <li>Email verificado: <span id="perfilVerified">—</span></li>
+          </ul>
+          <div style="margin-top:1.2rem">
+            <a class="btn btn-ghost" href="reservas.html">Nova reserva</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <h2>Histórico de Sessões</h2>
+      <div class="table-wrap">
+        <table id="perfilHistory">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Sessão</th>
+              <th>Duração</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>20/02/2026</td>
+              <td>PC Arena Pro #03</td>
+              <td>2h</td>
+              <td><span class="badge badge-green">Concluída</span></td>
+            </tr>
+            <tr>
+              <td>18/02/2026</td>
+              <td>Torneio Community Cup</td>
+              <td>3h</td>
+              <td><span class="badge badge-green">Concluída</span></td>
+            </tr>
+            <tr>
+              <td>16/02/2026</td>
+              <td>PC Arena Pro #01</td>
+              <td>1h</td>
+              <td><span class="badge badge-green">Concluída</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div><h3>Arena Gaming Valencia</h3><p>Gestão de conta e atividade gamer.</p></div>
+      <div><h3>Atalhos</h3><p><a href="reservas.html">Nova reserva</a></p><p><a href="loja.html">Loja</a></p></div>
+      <div><h3>Suporte</h3><p>suporte@arenavalencia.gg</p></div>
+    </div>
+  </footer>
+
+  <script src="env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
-
-

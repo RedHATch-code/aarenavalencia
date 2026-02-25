@@ -15,7 +15,8 @@
 ## 2) Crear cuenta y dar acceso de administrador
 1. Abrir `login.html`.
 2. Crear una cuenta en la pestaña "Registro".
-3. En Supabase SQL Editor, ejecutar:
+3. Nota: el registro está limitado a correos del dominio `@gglea.com`.
+4. En Supabase SQL Editor, ejecutar:
 
 ```sql
 update public.profiles
@@ -23,14 +24,22 @@ set role = 'admin'
 where id = 'UUID_DEL_USUARIO';
 ```
 
-4. Cerrar sesión e iniciar sesión de nuevo.
-5. Confirmar que aparece el enlace `Admin` en el menú.
+5. Cerrar sesión e iniciar sesión de nuevo.
+6. Confirmar que aparece el enlace `Admin` en el menú.
 
 ## 3) Acceder al panel de administración
 1. Abrir `admin.html`.
 2. Validar mensaje de acceso autorizado.
 
 Si aparece "Sin permiso", la cuenta todavía no tiene `role = 'admin'`.
+
+También puedes dar permisos admin por email en whitelist (recomendado):
+
+```sql
+insert into public.admin_whitelist(email)
+values ('admin@gglea.com')
+on conflict do nothing;
+```
 
 ## 4) Gestión de productos
 En el panel `Admin` -> pestaña `Productos`:
@@ -87,6 +96,11 @@ Si falta alguno, completarlo en `env.js`.
 - Stripe/PayPal están por enlace de pago (funcional por redirección).
 - No existe webhook automático para marcar el pago como "paid".
 - MB Way funciona con referencia manual.
+
+## 10) Seguridad aplicada
+- Solo se permite registro con emails `@gglea.com`.
+- Los usuarios normales no pueden activar `admin/staff` por su cuenta.
+- Solo cuentas admin/staff pueden crear, editar o eliminar eventos.
 
 ## Archivos principales
 - `admin.html`

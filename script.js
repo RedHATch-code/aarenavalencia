@@ -1,46 +1,142 @@
-﻿const menuBtn = document.querySelector("#menuBtn");
-const nav = document.querySelector("#mainNav");
+/* ================================================================
+   ARENA GAMING VALENCIA — script.js
+   Interactions, i18n, Supabase integration, shop, admin, checkout
+   ================================================================ */
 
-if (menuBtn && nav) {
-  menuBtn.addEventListener("click", () => nav.classList.toggle("open"));
-  nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => nav.classList.remove("open"));
+/* ── 1. Toast Notification System ─────────────────────────────── */
+function showToast(msg, type = 'info', duration = 4200) {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    document.body.appendChild(container);
+  }
+
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = msg;
+  container.appendChild(el);
+
+  // Double rAF ensures the element is in the DOM before the class is added
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => el.classList.add('toast-visible'));
   });
+
+  const hide = () => {
+    el.classList.remove('toast-visible');
+    el.addEventListener('transitionend', () => el.remove(), { once: true });
+  };
+
+  setTimeout(hide, duration);
 }
 
-const forms = document.querySelectorAll("form[data-demo='true']");
-forms.forEach((form) => {
-  if (form.closest("#tab-login, #tab-register, #tab-reset")) {
-    return;
+/* ── 1b. Setup Wizard (fires if SUPABASE_URL not configured) ───── */
+(function checkSetup() {
+  const cfg = window.SUPABASE_CONFIG || {};
+  if (!cfg.SUPABASE_URL) {
+    // Non-blocking: shows once per session
+    const key = 'arena_setup_warned';
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+    setTimeout(() => {
+      showToast('⚠ SUPABASE_URL não configurado em env.js — auth e loja não funcionam.', 'warning', 8000);
+    }, 1200);
   }
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const msg = form.dataset.message || "Datos enviados con éxito.";
-    alert(msg);
-    form.reset();
-  });
-});
+})();
 
-const tabButtons = document.querySelectorAll(".tab-btn");
-if (tabButtons.length) {
-  tabButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const target = button.dataset.target;
-      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-      document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.remove("active"));
-      button.classList.add("active");
-      document.querySelector(`#${target}`)?.classList.add("active");
+/* ── 2. Button Loading State ───────────────────────────────────── */
+function setLoading(btn, loading) {
+  if (!btn) return;
+  if (loading) {
+    btn.dataset.originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.classList.add('is-loading');
+    btn.innerHTML = '<span class="spinner"></span> A processar...';
+  } else {
+    btn.disabled = false;
+    btn.classList.remove('is-loading');
+    btn.innerHTML = btn.dataset.originalText || btn.innerHTML;
+  }
+}
+
+/* ── 3. Mobile Menu ────────────────────────────────────────────── */
+(function initMobileMenu() {
+  const menuBtn = document.querySelector('#menuBtn');
+  const nav = document.querySelector('#mainNav');
+  if (!menuBtn || !nav) return;
+
+  const toggle = (open) => {
+    const isOpen = open !== undefined ? open : !nav.classList.contains('open');
+    nav.classList.toggle('open', isOpen);
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+    menuBtn.textContent = isOpen ? '✕' : '☰';
+  };
+
+  menuBtn.addEventListener('click', () => toggle());
+
+  // Close when clicking a link
+  nav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => toggle(false));
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) toggle(false);
+  });
+
+  // Close on outside click
+  document.addEventListener('pointerdown', (e) => {
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !menuBtn.contains(e.target)) {
+      toggle(false);
+    }
+  });
+})();
+
+/* ── 4. Demo Forms (non-auth) ──────────────────────────────────── */
+(function initDemoForms() {
+  const forms = document.querySelectorAll("form[data-demo='true']");
+  forms.forEach((form) => {
+    if (form.closest('#tab-login, #tab-register, #tab-reset')) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = form.dataset.message || 'Datos enviados con éxito.';
+      showToast(msg, 'success');
+      form.reset();
     });
   });
-}
+})();
 
-const faqButtons = document.querySelectorAll(".faq-item button");
-faqButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    btn.closest(".faq-item")?.classList.toggle("open");
+/* ── 5. Tabs ───────────────────────────────────────────────────── */
+(function initTabs() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  if (!tabButtons.length) return;
+
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const target = button.dataset.target;
+      document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach((panel) => panel.classList.remove('active'));
+      button.classList.add('active');
+      document.querySelector(`#${target}`)?.classList.add('active');
+    });
   });
-});
+})();
 
+/* ── 6. FAQ ────────────────────────────────────────────────────── */
+(function initFaq() {
+  document.querySelectorAll('.faq-item button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      // Close others
+      document.querySelectorAll('.faq-item.open').forEach((open) => {
+        if (open !== item) open.classList.remove('open');
+      });
+      item?.classList.toggle('open');
+    });
+  });
+})();
+
+/* ── 7. i18n Dictionary ────────────────────────────────────────── */
 const i18n = {
   es_cast: {
     nav_home: "Inicio",
@@ -48,6 +144,7 @@ const i18n = {
     nav_setup: "PCs & Setup",
     nav_events: "Eventos",
     nav_booking: "Reservas",
+    nav_store: "Tienda",
     nav_gallery: "Galería",
     nav_about: "Sobre Nosotros",
     nav_contact: "Contacto",
@@ -102,6 +199,7 @@ const i18n = {
     nav_setup: "PCs y Setup",
     nav_events: "Eventos",
     nav_booking: "Reservas",
+    nav_store: "Tienda",
     nav_gallery: "Galería",
     nav_about: "Sobre Nosotros",
     nav_contact: "Contactos",
@@ -156,6 +254,7 @@ const i18n = {
     nav_setup: "PCs & Setup",
     nav_events: "Eventos",
     nav_booking: "Reservas",
+    nav_store: "Loja",
     nav_gallery: "Galeria",
     nav_about: "Sobre Nós",
     nav_contact: "Contactos",
@@ -210,6 +309,7 @@ const i18n = {
     nav_setup: "PCs & Setup",
     nav_events: "Events",
     nav_booking: "Bookings",
+    nav_store: "Store",
     nav_gallery: "Gallery",
     nav_about: "About Us",
     nav_contact: "Contact",
@@ -264,6 +364,7 @@ const i18n = {
     nav_setup: "ПК и сетап",
     nav_events: "События",
     nav_booking: "Бронирование",
+    nav_store: "Магазин",
     nav_gallery: "Галерея",
     nav_about: "О нас",
     nav_contact: "Контакты",
@@ -314,158 +415,179 @@ const i18n = {
   }
 };
 
+/* ── 8. Apply Language ─────────────────────────────────────────── */
 function applyLanguage(lang) {
   const dict = i18n[lang] || i18n.es_cast;
-  document.documentElement.lang = lang === "pt" ? "pt" : lang === "en" ? "en" : lang === "ru" ? "ru" : "es";
+  const htmlLang = lang === 'pt' ? 'pt' : lang === 'en' ? 'en' : lang === 'ru' ? 'ru' : 'es';
+  document.documentElement.lang = htmlLang;
 
-  document.querySelectorAll("[data-i18n]").forEach((node) => {
+  document.querySelectorAll('[data-i18n]').forEach((node) => {
     const key = node.dataset.i18n;
-    if (dict[key]) {
-      node.textContent = dict[key];
-    }
+    if (dict[key]) node.textContent = dict[key];
   });
 }
 
-const languageSelect = document.querySelector("#languageSelect");
-if (languageSelect) {
-  const saved = localStorage.getItem("arena_lang") || "es_cast";
-  languageSelect.value = saved;
+/* ── 9. Language Switcher Init ─────────────────────────────────── */
+(function initLanguage() {
+  // Inject if not present
+  if (!document.getElementById('languageSelect')) {
+    const topbar = document.querySelector('.topbar');
+    const menuBtn = document.querySelector('#menuBtn');
+    if (topbar && menuBtn) {
+      const div = document.createElement('div');
+      div.className = 'lang-switch';
+      div.innerHTML = `<select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast">Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>`;
+      topbar.insertBefore(div, menuBtn);
+    }
+  }
+
+  const select = document.getElementById('languageSelect');
+  if (!select) return;
+
+  const saved = localStorage.getItem('arena_lang') || 'es_cast';
+  select.value = saved;
   applyLanguage(saved);
 
-  languageSelect.addEventListener("change", (event) => {
-    const selected = event.target.value;
-    localStorage.setItem("arena_lang", selected);
-    applyLanguage(selected);
+  select.addEventListener('change', (e) => {
+    const lang = e.target.value;
+    localStorage.setItem('arena_lang', lang);
+    applyLanguage(lang);
   });
-}
+})();
 
-// Interaction upgrade: cursor glow, card tilt, page transitions
+/* ── 10. Experience Enhancements ───────────────────────────────── */
 (function enhanceExperience() {
   const body = document.body;
 
-  // Enter animation
-  requestAnimationFrame(() => body.classList.add("is-ready"));
+  // Page entry animation: add class first (synchronous, before paint), remove on rAF
+  body.classList.add('is-entering');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => body.classList.remove('is-entering'));
+  });
 
   // Cursor reactive ambient light
-  window.addEventListener("pointermove", (event) => {
-    const x = (event.clientX / window.innerWidth) * 100;
-    const y = (event.clientY / window.innerHeight) * 100;
-    body.style.setProperty("--mx", `${x}%`);
-    body.style.setProperty("--my", `${y}%`);
+  window.addEventListener('pointermove', (e) => {
+    const x = (e.clientX / window.innerWidth) * 100;
+    const y = (e.clientY / window.innerHeight) * 100;
+    body.style.setProperty('--mx', `${x}%`);
+    body.style.setProperty('--my', `${y}%`);
   });
 
   // Page transition overlay
-  if (!document.querySelector(".page-transition")) {
-    const overlay = document.createElement("div");
-    overlay.className = "page-transition";
+  if (!document.querySelector('.page-transition')) {
+    const overlay = document.createElement('div');
+    overlay.className = 'page-transition';
     body.appendChild(overlay);
   }
 
   document.querySelectorAll("a[href$='.html']").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      const href = link.getAttribute("href");
-      if (!href || href.startsWith("#") || event.ctrlKey || event.metaKey || event.shiftKey || event.button !== 0) {
-        return;
-      }
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
 
       const target = new URL(href, window.location.href);
-      if (target.origin !== window.location.origin) {
-        return;
-      }
+      if (target.origin !== window.location.origin) return;
 
-      event.preventDefault();
-      body.classList.add("is-leaving");
-      setTimeout(() => {
-        window.location.href = target.href;
-      }, 220);
+      e.preventDefault();
+      body.classList.add('is-leaving');
+      setTimeout(() => { window.location.href = target.href; }, 230);
     });
   });
 
-  // 3D tilt hover cards
-  const tiltItems = document.querySelectorAll(".card, .info-box, .blog-post, .timeline-item, .faq-item");
+  // 3D tilt on cards
+  const tiltItems = document.querySelectorAll('.card, .info-box, .blog-post, .timeline-item, .faq-item');
   tiltItems.forEach((item) => {
-    item.addEventListener("pointermove", (event) => {
+    item.addEventListener('pointermove', (e) => {
       const rect = item.getBoundingClientRect();
-      const px = (event.clientX - rect.left) / rect.width;
-      const py = (event.clientY - rect.top) / rect.height;
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
       const rx = (0.5 - py) * 5;
       const ry = (px - 0.5) * 7;
       item.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;
     });
-
-    item.addEventListener("pointerleave", () => {
-      item.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    item.addEventListener('pointerleave', () => {
+      item.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)';
     });
   });
+
+  // IntersectionObserver for .reveal elements
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach((el) => revealObs.observe(el));
 })();
 
-// Loja: carrinho local (demo)
+/* ── 11. Shop Module ───────────────────────────────────────────── */
 (function shopModule() {
-  const hasShopArea = Boolean(document.querySelector("#shopProducts"));
-  const cartItemsEl = document.querySelector("#cartItems");
-  const cartTotalEl = document.querySelector("#cartTotal");
-  const clearBtn = document.querySelector("#clearCartBtn");
-  const checkoutBtn = document.querySelector("#checkoutBtn");
-  const CART_KEY = "arena_cart_v1";
+  const hasShopArea = Boolean(document.querySelector('#shopProducts'));
+  const cartItemsEl = document.querySelector('#cartItems');
+  const cartTotalEl = document.querySelector('#cartTotal');
+  const clearBtn = document.querySelector('#clearCartBtn');
+  const checkoutBtn = document.querySelector('#checkoutBtn');
+  const CART_KEY = 'arena_cart_v1';
 
-  if (!hasShopArea && !cartItemsEl) {
-    return;
-  }
+  if (!hasShopArea && !cartItemsEl) return;
 
   const readCart = () => {
-    try {
-      return JSON.parse(localStorage.getItem(CART_KEY) || "[]");
-    } catch {
-      return [];
-    }
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
+    catch { return []; }
   };
 
-  const saveCart = (items) => {
-    localStorage.setItem(CART_KEY, JSON.stringify(items));
-  };
+  const saveCart = (items) => localStorage.setItem(CART_KEY, JSON.stringify(items));
 
   const currency = (n) => `${n.toFixed(2).replace('.', ',')} €`;
 
   const renderCart = () => {
-    if (!cartItemsEl || !cartTotalEl) {
-      return;
-    }
-
+    if (!cartItemsEl || !cartTotalEl) return;
     const cart = readCart();
+
     if (!cart.length) {
       cartItemsEl.innerHTML = '<p class="lead">O carrinho está vazio.</p>';
-      cartTotalEl.textContent = "0,00 €";
+      cartTotalEl.textContent = '0,00 €';
       return;
     }
 
     let total = 0;
-    cartItemsEl.innerHTML = cart
-      .map((item) => {
-        const line = item.price * item.qty;
-        total += line;
-        return `<div class="cart-item"><p><strong>${item.name}</strong><br><span class="qty-badge">Qtd: ${item.qty}</span></p><p>${currency(line)}</p><button class="remove-item" data-remove-id="${item.id}">Remover</button></div>`;
-      })
-      .join("");
+    cartItemsEl.innerHTML = cart.map((item) => {
+      const line = item.price * item.qty;
+      total += line;
+      return `<div class="cart-item">
+        <p><strong>${item.name}</strong><br><span class="qty-badge">Qtd: ${item.qty}</span></p>
+        <p>${currency(line)}</p>
+        <button class="remove-item" data-remove-id="${item.id}" aria-label="Remover ${item.name}">✕</button>
+      </div>`;
+    }).join('');
 
     cartTotalEl.textContent = currency(total);
 
-    cartItemsEl.querySelectorAll("[data-remove-id]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-remove-id");
-        const updated = readCart().filter((x) => x.id !== id);
-        saveCart(updated);
+    cartItemsEl.querySelectorAll('[data-remove-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-remove-id');
+        saveCart(readCart().filter((x) => x.id !== id));
         renderCart();
       });
     });
   };
 
-  document.addEventListener("click", (event) => {
-    const btn = event.target.closest("[data-add-to-cart]");
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-add-to-cart]');
     if (!btn) return;
 
-    const id = btn.getAttribute("data-id");
-    const name = btn.getAttribute("data-name");
-    const price = Number(btn.getAttribute("data-price") || 0);
+    const id = btn.getAttribute('data-id');
+    const name = btn.getAttribute('data-name');
+    const price = Number(btn.getAttribute('data-price') || 0);
     if (!id || !name || Number.isNaN(price)) return;
 
     const cart = readCart();
@@ -477,254 +599,312 @@ if (languageSelect) {
     }
     saveCart(cart);
     renderCart();
-    alert("Produto adicionado ao carrinho.");
+    showToast(`${name} adicionado ao carrinho.`, 'success');
   });
 
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      saveCart([]);
-      renderCart();
-    });
-  }
+  clearBtn?.addEventListener('click', () => { saveCart([]); renderCart(); });
 
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener("click", () => {
-      const cart = readCart();
-      if (!cart.length) {
-        alert("Adiciona produtos ao carrinho primeiro.");
-        return;
-      }
-      window.location.href = "pagamento.html";
-    });
-  }
+  checkoutBtn?.addEventListener('click', () => {
+    const cart = readCart();
+    if (!cart.length) {
+      showToast('Adiciona produtos ao carrinho primeiro.', 'warning');
+      return;
+    }
+    window.location.href = 'pagamento.html';
+  });
 
   renderCart();
 })();
 
-// Extra i18n key for store link in Home
-(function storeNavI18n() {
-  const labels = {
-    es_cast: "Tienda",
-    es_latam: "Tienda",
-    pt: "Loja",
-    en: "Store",
-    ru: "Магазин"
-  };
-
-  const apply = (lang) => {
-    const text = labels[lang] || labels.es_cast;
-    document.querySelectorAll('[data-i18n="nav_store"]').forEach((el) => {
-      el.textContent = text;
-    });
-  };
-
-  const lang = localStorage.getItem("arena_lang") || "es_cast";
-  apply(lang);
-
-  const languageSelectEl = document.querySelector("#languageSelect");
-  if (languageSelectEl) {
-    languageSelectEl.addEventListener("change", (event) => apply(event.target.value));
-  }
-})();
-
-// Supabase integration + admin panel + payments
+/* ── 12. Supabase Suite ────────────────────────────────────────── */
 (function supabaseSuite() {
   const cfg = window.SUPABASE_CONFIG || {};
-  const hasSupabaseLib = typeof window.supabase !== "undefined" && typeof window.supabase.createClient === "function";
+  const hasSupabaseLib = typeof window.supabase !== 'undefined' && typeof window.supabase.createClient === 'function';
   const canInit = Boolean(cfg.SUPABASE_URL && cfg.SUPABASE_PUBLISHABLE_KEY && hasSupabaseLib);
-  const CART_KEY = "arena_cart_v1";
+  const CART_KEY = 'arena_cart_v1';
 
   if (!canInit) {
-    const adminStatus = document.querySelector("#adminStatus");
-    if (adminStatus) {
-      adminStatus.textContent = "Configura SUPABASE_URL e carrega o cliente Supabase para ativar o admin.";
-    }
+    const adminStatus = document.querySelector('#adminStatus');
+    if (adminStatus) adminStatus.textContent = 'Configura SUPABASE_URL em env.js para ativar o admin.';
     return;
   }
 
   const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_PUBLISHABLE_KEY);
 
   const readCart = () => {
-    try {
-      return JSON.parse(localStorage.getItem(CART_KEY) || "[]");
-    } catch {
-      return [];
-    }
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
+    catch { return []; }
   };
 
   const formatEUR = (n) => `${Number(n).toFixed(2).replace('.', ',')} €`;
 
+  /* ── Helpers ─────────────────────────────────────────────────── */
   async function getSessionWithProfile() {
     const { data: sData } = await sb.auth.getSession();
     const session = sData?.session || null;
-    if (!session) {
-      return { session: null, profile: null };
-    }
+    if (!session) return { session: null, profile: null };
 
     const { data: profile } = await sb
-      .from("profiles")
-      .select("id, role, full_name, username")
-      .eq("id", session.user.id)
+      .from('profiles')
+      .select('id, role, full_name, username, source')
+      .eq('id', session.user.id)
       .maybeSingle();
 
     return { session, profile: profile || null };
   }
 
   function ensureAdminLink(isAdmin) {
-    const nav = document.querySelector("#mainNav");
+    const nav = document.querySelector('#mainNav');
     if (!nav) return;
-    let adminLink = nav.querySelector("a[data-admin-link]");
+    let adminLink = nav.querySelector('a[data-admin-link]');
 
     if (isAdmin && !adminLink) {
-      adminLink = document.createElement("a");
-      adminLink.href = "admin.html";
-      adminLink.dataset.adminLink = "true";
-      adminLink.textContent = "Admin";
+      adminLink = document.createElement('a');
+      adminLink.href = 'admin.html';
+      adminLink.dataset.adminLink = 'true';
+      adminLink.textContent = 'Admin';
       nav.appendChild(adminLink);
     }
 
-    if (!isAdmin && adminLink) {
-      adminLink.remove();
+    if (!isAdmin && adminLink) adminLink.remove();
+  }
+
+  function updateNavForSession(session, name) {
+    const loginLink = document.querySelector('#navLoginLink');
+    if (!loginLink) return;
+
+    if (session) {
+      const displayName = name || session.user.email?.split('@')[0] || 'Perfil';
+      loginLink.href = 'perfil.html';
+      loginLink.textContent = displayName;
+      loginLink.removeAttribute('data-i18n');
+    } else {
+      loginLink.href = 'login.html';
+      const lang = localStorage.getItem('arena_lang') || 'es_cast';
+      const dict = i18n[lang] || i18n.es_cast;
+      loginLink.textContent = dict.nav_login || 'Login';
+      loginLink.setAttribute('data-i18n', 'nav_login');
     }
   }
 
+  /* ── Login Page ──────────────────────────────────────────────── */
   async function setupLoginPage() {
-    const loginForm = document.querySelector("#tab-login form");
-    const registerForm = document.querySelector("#tab-register form");
-    const resetForm = document.querySelector("#tab-reset form");
+    const loginForm = document.querySelector('#tab-login form');
+    const registerForm = document.querySelector('#tab-register form');
+    const resetForm = document.querySelector('#tab-reset form');
 
-    if (!loginForm && !registerForm && !resetForm) {
-      return;
-    }
+    if (!loginForm && !registerForm && !resetForm) return;
 
-    [loginForm, registerForm, resetForm].forEach((form) => form?.removeAttribute("data-demo"));
+    [loginForm, registerForm, resetForm].forEach((f) => f?.removeAttribute('data-demo'));
 
     if (loginForm) {
-      loginForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = loginForm.querySelector('[type="submit"]');
         const email = loginForm.querySelector('input[type="email"]')?.value?.trim();
         const password = loginForm.querySelector('input[type="password"]')?.value;
+
+        setLoading(btn, true);
         const { error } = await sb.auth.signInWithPassword({ email, password });
-        if (error) {
-          alert(`Erro no login: ${error.message}`);
-          return;
-        }
-        alert("Login efetuado com sucesso.");
-        window.location.href = "perfil.html";
+        setLoading(btn, false);
+
+        if (error) { showToast(`Erro no login: ${error.message}`, 'error'); return; }
+        showToast('Login efetuado com sucesso!', 'success');
+        setTimeout(() => { window.location.href = 'perfil.html'; }, 800);
       });
     }
 
     if (registerForm) {
-      registerForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+      registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = registerForm.querySelector('[type="submit"]');
         const name = registerForm.querySelector('input[type="text"]')?.value?.trim();
         const email = registerForm.querySelector('input[type="email"]')?.value?.trim();
         const password = registerForm.querySelector('input[type="password"]')?.value;
 
+        if (!email || !password) { showToast('Preenche todos os campos obrigatórios.', 'warning'); return; }
+        if (password.length < 6) { showToast('A password deve ter pelo menos 6 caracteres.', 'warning'); return; }
+
+        setLoading(btn, true);
         const { data, error } = await sb.auth.signUp({
           email,
           password,
-          options: {
-            data: { full_name: name }
-          }
+          options: { data: { full_name: name } }
         });
+        setLoading(btn, false);
 
-        if (error) {
-          alert(`Erro no registo: ${error.message}`);
-          return;
-        }
+        if (error) { showToast(`Erro no registo: ${error.message}`, 'error'); return; }
 
         const uid = data?.user?.id;
         if (uid) {
-          await sb.from("profiles").upsert({ id: uid, full_name: name, role: "player" });
+          await sb.from('profiles').upsert({ id: uid, full_name: name, role: 'player', source: 'local' });
         }
 
-        alert("Conta criada. Verifica o teu email para confirmação (se ativo no Supabase).");
+        showToast('Conta criada! Verifica o teu email para confirmação.', 'success', 6000);
       });
     }
 
     if (resetForm) {
-      resetForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+      resetForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = resetForm.querySelector('[type="submit"]');
         const email = resetForm.querySelector('input[type="email"]')?.value?.trim();
+
+        setLoading(btn, true);
         const { error } = await sb.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/login.html`
         });
-        if (error) {
-          alert(`Erro: ${error.message}`);
-          return;
-        }
-        alert("Email de recuperação enviado.");
+        setLoading(btn, false);
+
+        if (error) { showToast(`Erro: ${error.message}`, 'error'); return; }
+        showToast('Email de recuperação enviado. Verifica a caixa de entrada.', 'success', 6000);
       });
     }
   }
 
-  async function setupAdminPage() {
-    const adminStatus = document.querySelector("#adminStatus");
-    const panel = document.querySelector("#adminPanel");
-    if (!adminStatus || !panel) {
-      return;
-    }
+  /* ── Perfil Page ─────────────────────────────────────────────── */
+  async function setupPerfilPage() {
+    const perfilForm = document.querySelector('#perfilForm');
+    if (!perfilForm) return;
 
     const { session, profile } = await getSessionWithProfile();
-    const isAdmin = Boolean(session && profile && ["admin", "staff"].includes(profile.role));
-    ensureAdminLink(isAdmin);
 
     if (!session) {
-      adminStatus.textContent = "Precisas de fazer login para aceder ao painel.";
+      showToast('Precisas de fazer login para aceder ao perfil.', 'warning');
+      setTimeout(() => { window.location.href = 'login.html'; }, 1500);
       return;
     }
 
-    if (!isAdmin) {
-      adminStatus.textContent = "Sem permissão: esta conta não é administradora.";
-      return;
+    // Fill fields
+    const nameInput = document.querySelector('#perfilName');
+    const emailInput = document.querySelector('#perfilEmail');
+    const nicknameInput = document.querySelector('#perfilNickname');
+    const displayNameEl = document.querySelector('#perfilDisplayName');
+    const levelEl = document.querySelector('#perfilLevel');
+    const levelBadgeEl = document.querySelector('#perfilLevelBadge');
+    const verifiedEl = document.querySelector('#perfilVerified');
+
+    const displayName = profile?.full_name || session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'Jogador';
+    const role = profile?.role || 'player';
+    const roleLabel = role === 'admin' ? 'Admin' : role === 'staff' ? 'Staff' : 'Player';
+    const badgeClass = role === 'admin' ? 'badge-pink' : role === 'staff' ? 'badge-cyan' : 'badge-gold';
+
+    if (nameInput) nameInput.value = profile?.full_name || session.user.user_metadata?.full_name || '';
+    if (emailInput) emailInput.value = session.user.email || '';
+    if (nicknameInput) nicknameInput.value = profile?.username || '';
+    if (displayNameEl) displayNameEl.textContent = displayName;
+    if (levelEl) levelEl.textContent = roleLabel;
+    if (levelBadgeEl) levelBadgeEl.innerHTML = `<span class="badge ${badgeClass}">${roleLabel}</span>`;
+    if (verifiedEl) verifiedEl.textContent = session.user.email_confirmed_at ? '✓ Verificado' : '⚠ Pendente';
+
+    // Avatar
+    const avatarEl = document.querySelector('#perfilAvatar');
+    if (avatarEl) avatarEl.src = `https://i.pravatar.cc/68?u=${session.user.id}`;
+
+    // Save profile
+    perfilForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = perfilForm.querySelector('[type="submit"]');
+      setLoading(btn, true);
+
+      const { error } = await sb.from('profiles').upsert({
+        id: session.user.id,
+        full_name: nameInput?.value?.trim(),
+        username: nicknameInput?.value?.trim()
+      });
+
+      setLoading(btn, false);
+      if (error) { showToast(`Erro: ${error.message}`, 'error'); return; }
+      showToast('Perfil atualizado com sucesso!', 'success');
+    });
+
+    // Logout
+    const logoutBtn = document.querySelector('#logoutBtn');
+    logoutBtn?.addEventListener('click', async () => {
+      setLoading(logoutBtn, true);
+      await sb.auth.signOut();
+      showToast('Sessão terminada.', 'info');
+      setTimeout(() => { window.location.href = 'index.html'; }, 800);
+    });
+
+    // Load booking history
+    const historyTbody = document.querySelector('#perfilHistory tbody');
+    if (historyTbody) {
+      const { data: bookings, error: bErr } = await sb
+        .from('bookings')
+        .select('created_at, station_name, duration_hours, status')
+        .eq('user_id', session.user.id)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (!bErr && bookings?.length) {
+        historyTbody.innerHTML = bookings.map((b) => `
+          <tr>
+            <td>${new Date(b.created_at).toLocaleDateString()}</td>
+            <td>${b.station_name || 'PC Arena Pro'}</td>
+            <td>${b.duration_hours}h</td>
+            <td><span class="badge badge-${b.status === 'completed' ? 'green' : b.status === 'active' ? 'cyan' : 'pink'}">${b.status}</span></td>
+          </tr>`).join('');
+      }
     }
+  }
 
-    adminStatus.textContent = `Acesso autorizado (${profile.role}).`;
-    panel.style.display = "block";
+  /* ── Admin Page ──────────────────────────────────────────────── */
+  async function setupAdminPage() {
+    const adminStatus = document.querySelector('#adminStatus');
+    const panel = document.querySelector('#adminPanel');
+    if (!adminStatus || !panel) return;
 
-    const paymentConfigStatus = document.querySelector("#paymentConfigStatus");
+    const { session, profile } = await getSessionWithProfile();
+    const isAdmin = Boolean(session && profile && ['admin', 'staff'].includes(profile.role));
+    ensureAdminLink(isAdmin);
+
+    if (!session) { adminStatus.textContent = 'Precisas de fazer login para aceder ao painel.'; return; }
+    if (!isAdmin) { adminStatus.textContent = 'Sem permissão: esta conta não é administradora.'; return; }
+
+    adminStatus.innerHTML = `Acesso autorizado <span class="badge badge-cyan">${profile.role}</span>`;
+    panel.style.display = 'block';
+
+    const paymentConfigStatus = document.querySelector('#paymentConfigStatus');
     if (paymentConfigStatus) {
-      const stripe = cfg.PAYMENT_STRIPE_URL ? "Stripe OK" : "Stripe em falta";
-      const paypal = cfg.PAYMENT_PAYPAL_URL ? "PayPal OK" : "PayPal em falta";
-      const mbway = cfg.PAYMENT_MBWAY_PHONE ? "MB Way OK" : "MB Way em falta";
-      paymentConfigStatus.textContent = `${stripe} | ${paypal} | ${mbway}`;
+      const stripe = cfg.PAYMENT_STRIPE_URL ? '<span class="badge badge-green">Stripe OK</span>' : '<span class="badge badge-pink">Stripe em falta</span>';
+      const paypal = cfg.PAYMENT_PAYPAL_URL ? '<span class="badge badge-green">PayPal OK</span>' : '<span class="badge badge-pink">PayPal em falta</span>';
+      const mbway = cfg.PAYMENT_MBWAY_PHONE ? '<span class="badge badge-green">MB Way OK</span>' : '<span class="badge badge-pink">MB Way em falta</span>';
+      paymentConfigStatus.innerHTML = `${stripe} &nbsp; ${paypal} &nbsp; ${mbway}`;
     }
 
-    const productsListEl = document.querySelector("#adminProductsList");
-    const eventsListEl = document.querySelector("#adminEventsList");
-    const productForm = document.querySelector("#productForm");
-    const eventForm = document.querySelector("#eventForm");
+    const productsListEl = document.querySelector('#adminProductsList');
+    const eventsListEl = document.querySelector('#adminEventsList');
+    const usersListEl = document.querySelector('#adminUsersList');
+    const productForm = document.querySelector('#productForm');
+    const eventForm = document.querySelector('#eventForm');
+    const userRoleFilter = document.querySelector('#userRoleFilter');
+    const userSourceFilter = document.querySelector('#userSourceFilter');
+    const reloadUsersBtn = document.querySelector('#reloadUsersBtn');
 
     const loadProducts = async () => {
       if (!productsListEl) return;
       const { data, error } = await sb
-        .from("products")
-        .select("id, name, price_eur, stock, is_active")
-        .order("created_at", { ascending: false });
+        .from('products')
+        .select('id, name, price_eur, stock, is_active')
+        .order('created_at', { ascending: false });
 
-      if (error) {
-        productsListEl.innerHTML = `<p>${error.message}</p>`;
-        return;
-      }
+      if (error) { productsListEl.innerHTML = `<p>${error.message}</p>`; return; }
+      if (!data?.length) { productsListEl.innerHTML = '<p>Sem produtos.</p>'; return; }
 
-      if (!data?.length) {
-        productsListEl.innerHTML = "<p>Sem produtos.</p>";
-        return;
-      }
+      productsListEl.innerHTML = data.map((p) =>
+        `<div class="admin-item">
+          <p><strong>${p.name}</strong><br>${formatEUR(p.price_eur)} &nbsp; Stock: ${p.stock} &nbsp; <span class="badge ${p.is_active ? 'badge-green' : 'badge-pink'}">${p.is_active ? 'Ativo' : 'Inativo'}</span></p>
+          <button class="remove-item" data-del-product="${p.id}" aria-label="Eliminar ${p.name}">✕</button>
+        </div>`
+      ).join('');
 
-      productsListEl.innerHTML = data
-        .map((p) => `<div class="admin-item"><p><strong>${p.name}</strong><br>${formatEUR(p.price_eur)} | Stock: ${p.stock} | ${p.is_active ? "Ativo" : "Inativo"}</p><button class="remove-item" data-del-product="${p.id}">Eliminar</button></div>`)
-        .join("");
-
-      productsListEl.querySelectorAll("[data-del-product]").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const id = btn.getAttribute("data-del-product");
-          const { error: delError } = await sb.from("products").delete().eq("id", id);
-          if (delError) {
-            alert(delError.message);
-            return;
-          }
+      productsListEl.querySelectorAll('[data-del-product]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const id = btn.getAttribute('data-del-product');
+          const { error: delError } = await sb.from('products').delete().eq('id', id);
+          if (delError) { showToast(delError.message, 'error'); return; }
+          showToast('Produto eliminado.', 'info');
           loadProducts();
         });
       });
@@ -733,150 +913,179 @@ if (languageSelect) {
     const loadEvents = async () => {
       if (!eventsListEl) return;
       const { data, error } = await sb
-        .from("events")
-        .select("id, title, starts_at, event_type")
-        .order("starts_at", { ascending: true });
+        .from('events')
+        .select('id, title, starts_at, event_type')
+        .order('starts_at', { ascending: true });
 
-      if (error) {
-        eventsListEl.innerHTML = `<p>${error.message}</p>`;
-        return;
-      }
+      if (error) { eventsListEl.innerHTML = `<p>${error.message}</p>`; return; }
+      if (!data?.length) { eventsListEl.innerHTML = '<p>Sem eventos.</p>'; return; }
 
-      if (!data?.length) {
-        eventsListEl.innerHTML = "<p>Sem eventos.</p>";
-        return;
-      }
+      eventsListEl.innerHTML = data.map((e) =>
+        `<div class="admin-item">
+          <p><strong>${e.title}</strong><br>${new Date(e.starts_at).toLocaleString()} &nbsp; <span class="badge badge-cyan">${e.event_type}</span></p>
+          <button class="remove-item" data-del-event="${e.id}" aria-label="Eliminar ${e.title}">✕</button>
+        </div>`
+      ).join('');
 
-      eventsListEl.innerHTML = data
-        .map((e) => `<div class="admin-item"><p><strong>${e.title}</strong><br>${new Date(e.starts_at).toLocaleString()} | ${e.event_type}</p><button class="remove-item" data-del-event="${e.id}">Eliminar</button></div>`)
-        .join("");
-
-      eventsListEl.querySelectorAll("[data-del-event]").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const id = btn.getAttribute("data-del-event");
-          const { error: delError } = await sb.from("events").delete().eq("id", id);
-          if (delError) {
-            alert(delError.message);
-            return;
-          }
+      eventsListEl.querySelectorAll('[data-del-event]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const id = btn.getAttribute('data-del-event');
+          const { error: delError } = await sb.from('events').delete().eq('id', id);
+          if (delError) { showToast(delError.message, 'error'); return; }
+          showToast('Evento eliminado.', 'info');
           loadEvents();
         });
       });
     };
 
-    productForm?.addEventListener("submit", async (event) => {
-      event.preventDefault();
+    const loadUsers = async () => {
+      if (!usersListEl) return;
+      let query = sb
+        .from('profiles')
+        .select('id, username, full_name, role, source, created_at')
+        .order('created_at', { ascending: false })
+        .limit(300);
+
+      const roleVal = userRoleFilter?.value || '';
+      const sourceVal = userSourceFilter?.value || '';
+      if (roleVal) query = query.eq('role', roleVal);
+      if (sourceVal) query = query.eq('source', sourceVal);
+
+      const { data, error } = await query;
+      if (error) { usersListEl.innerHTML = `<p>${error.message}</p>`; return; }
+      if (!data?.length) { usersListEl.innerHTML = '<p>Sem utilizadores para este filtro.</p>'; return; }
+
+      usersListEl.innerHTML = data.map((u) => {
+        const isStaff = ['admin', 'staff'].includes(u.role);
+        const nome = u.full_name || u.username || u.id;
+        const badgeClass = u.role === 'admin' ? 'badge-pink' : u.role === 'staff' ? 'badge-cyan' : 'badge-gold';
+        return `<div class="admin-item">
+          <p><strong>${nome}</strong><br>
+            <span class="badge ${badgeClass}">${u.role}</span>
+            &nbsp; ${isStaff ? 'Trabalhador' : 'Cliente'}
+            &nbsp; <span class="muted">${u.source || 'local'}</span>
+          </p>
+          <span class="qty-badge">${new Date(u.created_at).toLocaleDateString()}</span>
+        </div>`;
+      }).join('');
+    };
+
+    productForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = productForm.querySelector('[type="submit"]');
+      setLoading(btn, true);
       const payload = {
-        name: document.querySelector("#pName")?.value?.trim(),
-        description: document.querySelector("#pDescription")?.value?.trim() || null,
-        price_eur: Number(document.querySelector("#pPrice")?.value || 0),
-        image_url: document.querySelector("#pImage")?.value?.trim() || null,
-        stock: Number(document.querySelector("#pStock")?.value || 0),
-        is_active: document.querySelector("#pActive")?.value === "true",
+        name: document.querySelector('#pName')?.value?.trim(),
+        description: document.querySelector('#pDescription')?.value?.trim() || null,
+        price_eur: Number(document.querySelector('#pPrice')?.value || 0),
+        image_url: document.querySelector('#pImage')?.value?.trim() || null,
+        stock: Number(document.querySelector('#pStock')?.value || 0),
+        is_active: document.querySelector('#pActive')?.value === 'true',
         created_by: session.user.id
       };
-
-      const { error } = await sb.from("products").insert(payload);
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
+      const { error } = await sb.from('products').insert(payload);
+      setLoading(btn, false);
+      if (error) { showToast(error.message, 'error'); return; }
+      showToast('Produto guardado com sucesso!', 'success');
       productForm.reset();
       loadProducts();
     });
 
-    eventForm?.addEventListener("submit", async (event) => {
-      event.preventDefault();
+    eventForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = eventForm.querySelector('[type="submit"]');
+      setLoading(btn, true);
 
-      const { data: arena } = await sb.from("arenas").select("id").limit(1).maybeSingle();
+      const { data: arena } = await sb.from('arenas').select('id').limit(1).maybeSingle();
       if (!arena?.id) {
-        alert("Não existe arena configurada na base de dados.");
+        showToast('Não existe arena configurada na base de dados.', 'error');
+        setLoading(btn, false);
         return;
       }
 
-      const startLocal = document.querySelector("#eStart")?.value;
-      const endLocal = document.querySelector("#eEnd")?.value;
+      const startLocal = document.querySelector('#eStart')?.value;
+      const endLocal = document.querySelector('#eEnd')?.value;
       const payload = {
         arena_id: arena.id,
-        title: document.querySelector("#eTitle")?.value?.trim(),
-        description: document.querySelector("#eDescription")?.value?.trim() || null,
-        event_type: document.querySelector("#eType")?.value || "other",
+        title: document.querySelector('#eTitle')?.value?.trim(),
+        description: document.querySelector('#eDescription')?.value?.trim() || null,
+        event_type: document.querySelector('#eType')?.value || 'other',
         starts_at: startLocal ? new Date(startLocal).toISOString() : null,
         ends_at: endLocal ? new Date(endLocal).toISOString() : null,
-        max_participants: Number(document.querySelector("#eMax")?.value || 0) || null,
+        max_participants: Number(document.querySelector('#eMax')?.value || 0) || null,
         is_public: true,
         created_by: session.user.id
       };
 
-      const { error } = await sb.from("events").insert(payload);
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
+      const { error } = await sb.from('events').insert(payload);
+      setLoading(btn, false);
+      if (error) { showToast(error.message, 'error'); return; }
+      showToast('Evento guardado com sucesso!', 'success');
       eventForm.reset();
       loadEvents();
     });
 
     loadProducts();
     loadEvents();
+    loadUsers();
+    userRoleFilter?.addEventListener('change', loadUsers);
+    userSourceFilter?.addEventListener('change', loadUsers);
+    reloadUsersBtn?.addEventListener('click', loadUsers);
   }
 
+  /* ── Checkout Page ───────────────────────────────────────────── */
   async function setupCheckoutPage() {
-    const checkoutItems = document.querySelector("#checkoutItems");
-    const checkoutTotal = document.querySelector("#checkoutTotal");
-    const payStripeBtn = document.querySelector("#payStripeBtn");
-    const payPaypalBtn = document.querySelector("#payPaypalBtn");
-    const payMbwayBtn = document.querySelector("#payMbwayBtn");
-    const statusEl = document.querySelector("#checkoutStatus");
-    const mbwayInfo = document.querySelector("#mbwayInfo");
+    const checkoutItems = document.querySelector('#checkoutItems');
+    const checkoutTotal = document.querySelector('#checkoutTotal');
+    const payStripeBtn = document.querySelector('#payStripeBtn');
+    const payPaypalBtn = document.querySelector('#payPaypalBtn');
+    const payMbwayBtn = document.querySelector('#payMbwayBtn');
+    const statusEl = document.querySelector('#checkoutStatus');
+    const mbwayInfo = document.querySelector('#mbwayInfo');
 
-    if (!checkoutItems || !checkoutTotal) {
-      return;
-    }
+    if (!checkoutItems || !checkoutTotal) return;
 
     const cart = readCart();
     if (!cart.length) {
-      checkoutItems.innerHTML = "<p>O carrinho está vazio.</p>";
-      checkoutTotal.textContent = "0,00 €";
-      payStripeBtn && (payStripeBtn.disabled = true);
-      payPaypalBtn && (payPaypalBtn.disabled = true);
-      payMbwayBtn && (payMbwayBtn.disabled = true);
+      checkoutItems.innerHTML = '<p class="lead">O carrinho está vazio.</p>';
+      checkoutTotal.textContent = '0,00 €';
+      if (payStripeBtn) payStripeBtn.disabled = true;
+      if (payPaypalBtn) payPaypalBtn.disabled = true;
+      if (payMbwayBtn) payMbwayBtn.disabled = true;
       return;
     }
 
     let total = 0;
-    checkoutItems.innerHTML = cart
-      .map((item) => {
-        const line = item.price * item.qty;
-        total += line;
-        return `<div class="cart-item"><p><strong>${item.name}</strong><br><span class="qty-badge">Qtd: ${item.qty}</span></p><p>${formatEUR(line)}</p><span></span></div>`;
-      })
-      .join("");
+    checkoutItems.innerHTML = cart.map((item) => {
+      const line = item.price * item.qty;
+      total += line;
+      return `<div class="cart-item">
+        <p><strong>${item.name}</strong><br><span class="qty-badge">Qtd: ${item.qty}</span></p>
+        <p>${formatEUR(line)}</p>
+        <span></span>
+      </div>`;
+    }).join('');
 
     checkoutTotal.textContent = formatEUR(total);
 
     const { session } = await getSessionWithProfile();
-    if (!session) {
-      statusEl && (statusEl.textContent = "Faz login para registar a encomenda no sistema.");
+    if (!session && statusEl) {
+      statusEl.textContent = 'Faz login para registar a encomenda no sistema.';
     }
 
     const createOrder = async (method) => {
-      if (!session) {
-        return { error: { message: "Precisas de login para pagar." } };
-      }
+      if (!session) return { error: { message: 'Precisas de login para pagar.' } };
 
       const orderPayload = {
         user_id: session.user.id,
         customer_email: session.user.email,
         amount_total: total,
-        currency: "EUR",
-        status: "pending",
+        currency: 'EUR',
+        status: 'pending',
         payment_method: method
       };
 
-      const { data: order, error } = await sb.from("orders").insert(orderPayload).select("id").single();
+      const { data: order, error } = await sb.from('orders').insert(orderPayload).select('id').single();
       if (error) return { error };
 
       const itemsPayload = cart.map((item) => ({
@@ -888,98 +1097,204 @@ if (languageSelect) {
         line_total: item.price * item.qty
       }));
 
-      const { error: itemErr } = await sb.from("order_items").insert(itemsPayload);
+      const { error: itemErr } = await sb.from('order_items').insert(itemsPayload);
       if (itemErr) return { error: itemErr };
 
       return { orderId: order.id };
     };
 
-    payStripeBtn?.addEventListener("click", async () => {
-      const { error } = await createOrder("stripe");
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      if (cfg.PAYMENT_STRIPE_URL) {
-        window.location.href = cfg.PAYMENT_STRIPE_URL;
-        return;
-      }
-      alert("Define PAYMENT_STRIPE_URL em env.js para ativar Stripe.");
+    payStripeBtn?.addEventListener('click', async () => {
+      setLoading(payStripeBtn, true);
+      const { error } = await createOrder('stripe');
+      setLoading(payStripeBtn, false);
+      if (error) { showToast(error.message, 'error'); return; }
+      if (cfg.PAYMENT_STRIPE_URL) { window.location.href = cfg.PAYMENT_STRIPE_URL; return; }
+      showToast('Define PAYMENT_STRIPE_URL em env.js para ativar Stripe.', 'warning');
     });
 
-    payPaypalBtn?.addEventListener("click", async () => {
-      const { error } = await createOrder("paypal");
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      if (cfg.PAYMENT_PAYPAL_URL) {
-        window.location.href = cfg.PAYMENT_PAYPAL_URL;
-        return;
-      }
-      alert("Define PAYMENT_PAYPAL_URL em env.js para ativar PayPal.");
+    payPaypalBtn?.addEventListener('click', async () => {
+      setLoading(payPaypalBtn, true);
+      const { error } = await createOrder('paypal');
+      setLoading(payPaypalBtn, false);
+      if (error) { showToast(error.message, 'error'); return; }
+      if (cfg.PAYMENT_PAYPAL_URL) { window.location.href = cfg.PAYMENT_PAYPAL_URL; return; }
+      showToast('Define PAYMENT_PAYPAL_URL em env.js para ativar PayPal.', 'warning');
     });
 
-    payMbwayBtn?.addEventListener("click", async () => {
-      const { orderId, error } = await createOrder("mbway");
-      if (error) {
-        alert(error.message);
-        return;
-      }
+    payMbwayBtn?.addEventListener('click', async () => {
+      setLoading(payMbwayBtn, true);
+      const { orderId, error } = await createOrder('mbway');
+      setLoading(payMbwayBtn, false);
+      if (error) { showToast(error.message, 'error'); return; }
 
       const ref = `MBW-${String(orderId).slice(0, 8).toUpperCase()}`;
-      await sb.from("orders").update({ payment_reference: ref }).eq("id", orderId);
-      mbwayInfo && (mbwayInfo.textContent = `Referência MB Way: ${ref} | Contacto: ${cfg.PAYMENT_MBWAY_PHONE || "(configurar em env.js)"}`);
-      statusEl && (statusEl.textContent = "Pedido criado. Conclui o pagamento por MB Way e depois confirma manualmente no backoffice.");
-      localStorage.setItem(CART_KEY, "[]");
+      await sb.from('orders').update({ payment_reference: ref }).eq('id', orderId);
+      if (mbwayInfo) mbwayInfo.textContent = `Referência MB Way: ${ref} | Contacto: ${cfg.PAYMENT_MBWAY_PHONE || '(configurar em env.js)'}`;
+      if (statusEl) statusEl.textContent = 'Pedido criado. Conclui o pagamento por MB Way.';
+      localStorage.setItem(CART_KEY, '[]');
+      showToast('Pedido MB Way criado com sucesso!', 'success');
     });
   }
 
+  /* ── Store Page ──────────────────────────────────────────────── */
   async function setupStorePage() {
-    const shopGrid = document.querySelector("#shopProducts");
+    const shopGrid = document.querySelector('#shopProducts');
     if (!shopGrid) return;
 
     const { data, error } = await sb
-      .from("products")
-      .select("id, name, description, price_eur, image_url, is_active")
-      .eq("is_active", true)
-      .order("created_at", { ascending: false });
+      .from('products')
+      .select('id, name, description, price_eur, image_url, is_active')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false });
 
-    if (error || !data?.length) {
-      return;
-    }
+    if (error || !data?.length) return;
 
-    const fallbackShots = ["shot-1", "shot-2", "shot-3", "shot-4", "shot-5", "shot-6"];
-    shopGrid.innerHTML = data
-      .map((p, idx) => {
-        const shotClass = fallbackShots[idx % fallbackShots.length];
-        const photo = p.image_url
-          ? `<div class="product-photo shot" style="background-image:url('${String(p.image_url).replace(/'/g, "%27")}')"></div>`
-          : `<div class="product-photo shot ${shotClass}"></div>`;
+    const fallbackShots = ['shot-1', 'shot-2', 'shot-3', 'shot-4', 'shot-5', 'shot-6'];
+    shopGrid.innerHTML = data.map((p, idx) => {
+      const shotClass = fallbackShots[idx % fallbackShots.length];
+      const photo = p.image_url
+        ? `<div class="product-photo shot" style="background-image:url('${String(p.image_url).replace(/'/g, '%27')}')"></div>`
+        : `<div class="product-photo shot ${shotClass}"></div>`;
 
-        return `<article class="card product-card">
-          ${photo}
-          <h3>${p.name}</h3>
-          <p>${p.description || "Produto oficial Arena Gaming Valencia."}</p>
-          <p class="price">${formatEUR(p.price_eur)}</p>
-          <button class="btn btn-primary" data-add-to-cart data-id="${p.id}" data-name="${p.name.replace(/"/g, "&quot;")}" data-price="${p.price_eur}">Adicionar ao carrinho</button>
-        </article>`;
-      })
-      .join("");
+      return `<article class="card product-card">
+        ${photo}
+        <h3>${p.name}</h3>
+        <p>${p.description || 'Produto oficial Arena Gaming Valencia.'}</p>
+        <p class="price">${formatEUR(p.price_eur)}</p>
+        <button class="btn btn-primary" data-add-to-cart data-id="${p.id}" data-name="${p.name.replace(/"/g, '&quot;')}" data-price="${p.price_eur}">Adicionar ao carrinho</button>
+      </article>`;
+    }).join('');
   }
 
+  /* ── ggLeap Admin Redirect ───────────────────────────────────── */
+  function setupGgleapAdminPanel(profile) {
+    const adminUrl = (cfg.GGLEAP_ADMIN_URL || '').trim();
+    const isStaff = ['admin', 'staff'].includes(profile?.role);
+    if (!isStaff) return;
+
+    // In admin page: inject a ggLeap management block at the top
+    const adminGuard = document.querySelector('#adminGuard');
+    if (adminGuard) {
+      const ggleapBlock = document.createElement('article');
+      ggleapBlock.className = 'card';
+      ggleapBlock.style.cssText = 'border-color:rgba(0,240,255,0.5);margin-bottom:0;';
+      ggleapBlock.innerHTML = `
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <p class="eyebrow" style="margin:0 0 0.3rem">Gestão Operacional</p>
+            <h3 style="margin:0 0 0.4rem">Painel ggLeap / ggCircuit</h3>
+            <p style="margin:0">Gere reservas, postos, utilizadores e relatórios diretamente no sistema ggLeap.</p>
+          </div>
+          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+            ${adminUrl
+              ? `<a class="btn btn-primary" href="${adminUrl}" target="_blank" rel="noopener noreferrer">Abrir painel ggLeap ↗</a>`
+              : `<span class="badge badge-pink" style="padding:0.4rem 0.8rem;">GGLEAP_ADMIN_URL não configurado em env.js</span>`
+            }
+          </div>
+        </div>`;
+      adminGuard.prepend(ggleapBlock);
+    }
+
+    // Show toast redirect offer for staff landing anywhere
+    if (adminUrl && !document.querySelector('#adminPanel')) {
+      const key = `arena_ggleap_offer_${Date.now().toString().slice(0, -4)}`;
+      if (sessionStorage.getItem('arena_ggleap_offered')) return;
+      sessionStorage.setItem('arena_ggleap_offered', '1');
+
+      setTimeout(() => {
+        const container = document.getElementById('toast-container') || (() => {
+          const el = document.createElement('div');
+          el.id = 'toast-container';
+          document.body.appendChild(el);
+          return el;
+        })();
+
+        const el = document.createElement('div');
+        el.className = 'toast toast-info';
+        el.style.cssText = 'max-width:360px;cursor:pointer;';
+        el.innerHTML = `<strong>Painel ggLeap</strong><br><small>Clica aqui para ir para o painel de gestão ggLeap.</small>`;
+        el.addEventListener('click', () => window.open(adminUrl, '_blank'));
+        container.appendChild(el);
+        requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('toast-visible')); });
+        setTimeout(() => { el.classList.remove('toast-visible'); el.addEventListener('transitionend', () => el.remove(), { once: true }); }, 10000);
+      }, 1800);
+    }
+  }
+
+  /* ── Session-aware nav ───────────────────────────────────────── */
   async function bootstrapRoleNav() {
     const { session, profile } = await getSessionWithProfile();
-    const isAdmin = Boolean(session && profile && ["admin", "staff"].includes(profile.role));
+    const isAdmin = Boolean(session && profile && ['admin', 'staff'].includes(profile.role));
     ensureAdminLink(isAdmin);
+    updateNavForSession(session, profile?.full_name || session?.user?.user_metadata?.full_name);
+    if (isAdmin) setupGgleapAdminPanel(profile);
   }
 
   setupLoginPage();
   setupAdminPage();
   setupCheckoutPage();
   setupStorePage();
+  setupPerfilPage();
   bootstrapRoleNav();
 })();
 
+/* ── 13. ggLeap Booking Portal ─────────────────────────────────── */
+(function setupGgleapPortal() {
+  const iframe = document.querySelector('#portalEmbed');
+  const openBtn = document.querySelector('#portalOpenBtn');
+  const statusEl = document.querySelector('#portalStatus');
+  const wrap = document.querySelector('#portalEmbedWrap');
+  if (!iframe || !openBtn || !statusEl || !wrap) return;
+
+  const cfg = window.SUPABASE_CONFIG || {};
+  const portalUrl = (cfg.GGLEAP_PORTAL_URL || '').trim();
+  const allowEmbed = cfg.GGLEAP_EMBED_IFRAME !== false;
+
+  if (!portalUrl) {
+    wrap.style.display = 'none';
+    openBtn.style.display = 'none';
+    statusEl.textContent = 'Falta configurar GGLEAP_PORTAL_URL no ficheiro env.js.';
+    return;
+  }
+
+  openBtn.href = portalUrl;
+
+  if (!allowEmbed) {
+    wrap.style.display = 'none';
+    statusEl.textContent = 'Embed desativado. Usa o botão para abrir o portal oficial.';
+    return;
+  }
+
+  let loaded = false;
+  const fallback = () => {
+    if (loaded) return;
+    wrap.style.display = 'none';
+    statusEl.textContent = 'O portal bloqueou o iframe. Usa o botão para abrir em nova aba.';
+  };
+
+  iframe.addEventListener('load', () => {
+    loaded = true;
+    statusEl.textContent = 'Portal carregado.';
+  });
+
+  setTimeout(fallback, 4500);
+  iframe.src = portalUrl;
+})();
+
+/* ── 14. PC Reservation Redirect ───────────────────────────────── */
+(function setupPcReservationRedirect() {
+  const form = document.querySelector('#pcReservationForm');
+  if (!form) return;
+
+  const cfg = window.SUPABASE_CONFIG || {};
+  const portalUrl = (cfg.GGLEAP_PORTAL_URL || '').trim();
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!portalUrl) {
+      showToast('Falta configurar GGLEAP_PORTAL_URL no env.js.', 'warning');
+      return;
+    }
+    window.location.href = portalUrl;
+  });
+})();

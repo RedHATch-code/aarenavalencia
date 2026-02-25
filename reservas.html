@@ -1,48 +1,128 @@
-﻿<!DOCTYPE html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia — Reserva a tua sessão online. Escolhe o posto, horário e duração." />
   <title>Arena Gaming Valencia | Reservas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" /><link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="bg-grid"></div>
-<header class="topbar"><a class="logo" href="index.html">ARENA <span>VALENCIA</span></a><button class="menu-btn" id="menuBtn">☰</button><nav id="mainNav"><a href="index.html">Home</a><a href="servicos.html">Serviços</a><a href="setup.html">PCs & Setup</a><a href="eventos.html">Eventos</a><a href="reservas.html" class="active">Reservas</a><a href="loja.html">Loja</a><a href="galeria.html">Galeria</a><a href="sobre.html">Sobre Nós</a><a href="contactos.html">Contactos</a><a href="login.html">Login</a></nav></header>
-<main class="page-wrap">
-  <section class="page-hero"><p class="eyebrow">Conversão</p><h1>Reserva a tua sessão</h1><p class="lead">Processo rápido para escolher posto, horário e duração. Fluxo realista para demonstração da P.A.P.</p></section>
-  <section class="section">
-    <div class="grid-2">
-      <article class="card">
-        <h3>Formulário de Reserva</h3>
-        <form data-demo="true" data-message="Pedido de reserva enviado. Recebes confirmação por email em minutos.">
-          <label>Nome</label><input type="text" required />
-          <label>Email</label><input type="email" required />
-          <label>Tipo de posto</label>
-          <select required><option value="">Seleciona</option><option>PC Arena Pro #01</option><option>PC Arena Pro #02</option><option>Console Zone #A</option><option>Sala Privada Team</option></select>
-          <label>Data</label><input type="date" required />
-          <label>Horário</label><input type="time" required />
-          <label>Duração</label>
-          <select required><option value="">Seleciona</option><option>1 hora</option><option>2 horas</option><option>3 horas</option><option>4 horas</option></select>
-          <label>Notas</label><textarea rows="4" placeholder="Ex: vou com equipa de 5 jogadores"></textarea>
-          <button class="btn btn-primary" type="submit">Confirmar Pedido</button>
-        </form>
-      </article>
-      <article class="card">
-        <h3>Informação útil</h3>
-        <ul class="checklist"><li>Check-in 10 min antes</li><li>Pagamento no local ou online</li><li>Possibilidade de reagendar</li><li>Descontos para packs de equipa</li></ul>
-        <h3>Horário</h3>
-        <p>Segunda a Domingo: 10:00 - 02:00</p>
-      </article>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
+    <div class="lang-switch">
+      <select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast" selected>Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>
     </div>
-  </section>
-</main>
-<footer class="site-footer"><div class="footer-grid"><div><h3>Arena Gaming Valencia</h3><p>Reserva rápida e experiência profissional.</p></div><div><h3>Suporte</h3><p><a href="contactos.html">Falar com equipa</a></p></div><div><h3>Telefone</h3><p>+34 960 000 000</p></div></div></footer>
-<script src="env.js"></script>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="servicos.html" data-i18n="nav_services">Servicios</a>
+      <a href="setup.html" data-i18n="nav_setup">PCs & Setup</a>
+      <a href="eventos.html" data-i18n="nav_events">Eventos</a>
+      <a href="reservas.html" class="active" data-i18n="nav_booking">Reservas</a>
+      <a href="loja.html" data-i18n="nav_store">Tienda</a>
+      <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
+      <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
+      <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
+      <a href="login.html" data-i18n="nav_login" id="navLoginLink">Login</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">Reserva online</p>
+      <h1>Reserva a tua sessão</h1>
+      <p class="lead">Processo rápido para escolher posto, horário e duração. Reserva diretamente pelo portal oficial.</p>
+    </section>
+
+    <section class="section reveal">
+      <article class="card booking-portal-card">
+        <h2>Reservas Online (ggLeap Portal)</h2>
+        <p class="lead">Reserva diretamente no portal oficial. Se o embed for bloqueado pelo serviço, usa o botão para abrir em nova aba.</p>
+        <div id="portalEmbedWrap" class="portal-embed-wrap">
+          <iframe id="portalEmbed" class="portal-embed" title="ggLeap Booking Portal" loading="lazy"></iframe>
+        </div>
+        <div class="cta-row">
+          <a id="portalOpenBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">Abrir Portal de Reservas</a>
+        </div>
+        <p id="portalStatus" class="lead"></p>
+      </article>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid-2">
+        <article class="card">
+          <h3>Formulário de Reserva</h3>
+          <form id="pcReservationForm" data-demo="true" data-message="Pedido de reserva enviado. Recebes confirmação por email.">
+            <label for="resNome">Nome</label>
+            <input type="text" id="resNome" required placeholder="O teu nome" autocomplete="name" />
+            <label for="resEmail">Email</label>
+            <input type="email" id="resEmail" required placeholder="email@exemplo.com" autocomplete="email" />
+            <label for="resPosto">Tipo de posto</label>
+            <select id="resPosto" required>
+              <option value="">Seleciona</option>
+              <option>PC Arena Pro #01</option>
+              <option>PC Arena Pro #02</option>
+              <option>Console Zone #A</option>
+              <option>Sala Privada Team</option>
+            </select>
+            <label for="resData">Data</label>
+            <input type="date" id="resData" required />
+            <label for="resHora">Horário</label>
+            <input type="time" id="resHora" required />
+            <label for="resDuracao">Duração</label>
+            <select id="resDuracao" required>
+              <option value="">Seleciona</option>
+              <option>1 hora</option>
+              <option>2 horas</option>
+              <option>3 horas</option>
+              <option>4 horas</option>
+            </select>
+            <label for="resNotas">Notas (opcional)</label>
+            <textarea id="resNotas" rows="3" placeholder="Ex: vou com equipa de 5 jogadores"></textarea>
+            <button class="btn btn-primary" type="submit">Reservar via ggLeap</button>
+          </form>
+        </article>
+
+        <article class="card">
+          <h3>Informação útil</h3>
+          <ul class="checklist">
+            <li>Check-in 10 minutos antes</li>
+            <li>Pagamento no local ou online</li>
+            <li>Possibilidade de reagendar</li>
+            <li>Descontos para packs de equipa</li>
+          </ul>
+          <h3 style="margin-top:1.2rem">Horário</h3>
+          <p>Segunda a Domingo: 10:00 — 02:00</p>
+          <div class="cta-row" style="margin-top:1rem">
+            <a class="btn btn-ghost" href="faq.html">Ver FAQ</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div><h3>Arena Gaming Valencia</h3><p>Reserva rápida e experiência profissional.</p></div>
+      <div><h3>Suporte</h3><p><a href="contactos.html">Falar com a equipa</a></p></div>
+      <div><h3>Telefone</h3><p>+34 960 000 000</p></div>
+    </div>
+  </footer>
+
+  <script src="env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
-
-

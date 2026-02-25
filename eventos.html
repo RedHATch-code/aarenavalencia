@@ -1,29 +1,109 @@
-﻿<!DOCTYPE html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia — Calendário de eventos e torneios. Inscreve-te nas competições de esports." />
   <title>Arena Gaming Valencia | Eventos</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" /><link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="bg-grid"></div>
-<header class="topbar"><a class="logo" href="index.html">ARENA <span>VALENCIA</span></a><button class="menu-btn" id="menuBtn">☰</button><nav id="mainNav"><a href="index.html">Home</a><a href="servicos.html">Serviços</a><a href="setup.html">PCs & Setup</a><a href="eventos.html" class="active">Eventos</a><a href="reservas.html">Reservas</a><a href="loja.html">Loja</a><a href="galeria.html">Galeria</a><a href="sobre.html">Sobre Nós</a><a href="contactos.html">Contactos</a><a href="login.html">Login</a></nav></header>
-<main class="page-wrap">
-  <section class="page-hero"><p class="eyebrow">Engagement</p><h1>Eventos & Torneios</h1><p class="lead">Calendário competitivo com eventos públicos e privados para equipas, comunidade e empresas.</p></section>
-  <section class="section"><div class="grid-3">
-    <article class="timeline-item"><p class="tag">28 Fev</p><h3>Night Ranked Clash</h3><p>Inscrição individual | Prize pool local | Bo3.</p><a class="btn btn-primary" href="reservas.html">Inscrever</a></article>
-    <article class="timeline-item"><p class="tag">02 Mar</p><h3>Community Cup</h3><p>Equipas mistas e foco na comunidade emergente.</p><a class="btn btn-primary" href="reservas.html">Inscrever</a></article>
-    <article class="timeline-item"><p class="tag">07 Mar</p><h3>Weekend Elite</h3><p>Formato avançado para jogadores e equipas competitivas.</p><a class="btn btn-primary" href="reservas.html">Inscrever</a></article>
-  </div></section>
-  <section class="section"><div class="grid-2"><article class="info-box"><h3>Eventos privados</h3><p>Disponível para aniversários, escolas, equipas e empresas.</p><ul class="checklist"><li>Gestão completa do evento</li><li>Arbitragem e staff</li><li>Pacotes personalizados</li></ul></article><article class="info-box"><h3>Como participar</h3><ol class="timeline"><li>Criar conta</li><li>Escolher torneio</li><li>Confirmar inscrição</li><li>Check-in no dia do evento</li></ol></article></div></section>
-</main>
-<footer class="site-footer"><div class="footer-grid"><div><h3>Arena Gaming Valencia</h3><p>Casa dos torneios em Valência.</p></div><div><h3>Rápido</h3><p><a href="reservas.html">Inscrição e reservas</a></p></div><div><h3>Email</h3><p>eventos@arenavalencia.gg</p></div></div></footer>
-<script src="env.js"></script>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
+    <div class="lang-switch">
+      <select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast" selected>Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="servicos.html" data-i18n="nav_services">Servicios</a>
+      <a href="setup.html" data-i18n="nav_setup">PCs & Setup</a>
+      <a href="eventos.html" class="active" data-i18n="nav_events">Eventos</a>
+      <a href="reservas.html" data-i18n="nav_booking">Reservas</a>
+      <a href="loja.html" data-i18n="nav_store">Tienda</a>
+      <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
+      <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
+      <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
+      <a href="login.html" data-i18n="nav_login" id="navLoginLink">Login</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">Calendário competitivo</p>
+      <h1>Eventos & Torneios</h1>
+      <p class="lead">Competições públicas e privadas para equipas, comunidade e empresas. Inscreve-te e compite.</p>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid-3">
+        <article class="timeline-item">
+          <p class="tag">28 Fev</p>
+          <h3>Night Ranked Clash</h3>
+          <p>Inscrição individual | Prize pool local | Bo3.</p>
+          <div class="cta-row"><a class="btn btn-primary" href="reservas.html">Inscrever</a></div>
+        </article>
+        <article class="timeline-item">
+          <p class="tag">02 Mar</p>
+          <h3>Community Cup</h3>
+          <p>Equipas mistas e foco na comunidade emergente.</p>
+          <div class="cta-row"><a class="btn btn-primary" href="reservas.html">Inscrever</a></div>
+        </article>
+        <article class="timeline-item">
+          <p class="tag">07 Mar</p>
+          <h3>Weekend Elite</h3>
+          <p>Formato avançado para jogadores e equipas competitivas.</p>
+          <div class="cta-row"><a class="btn btn-primary" href="reservas.html">Inscrever</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid-2">
+        <article class="info-box">
+          <h3>Eventos privados</h3>
+          <p>Disponível para aniversários, escolas, equipas e empresas.</p>
+          <ul class="checklist">
+            <li>Gestão completa do evento</li>
+            <li>Arbitragem e staff</li>
+            <li>Pacotes personalizados</li>
+          </ul>
+          <div class="cta-row"><a class="btn btn-ghost" href="contactos.html">Solicitar orçamento</a></div>
+        </article>
+        <article class="info-box">
+          <h3>Como participar</h3>
+          <ol class="timeline">
+            <li>Criar conta em Login</li>
+            <li>Escolher o torneio</li>
+            <li>Confirmar inscrição</li>
+            <li>Check-in no dia do evento</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div><h3>Arena Gaming Valencia</h3><p>Casa dos torneios em Valência.</p></div>
+      <div><h3>Rápido</h3><p><a href="reservas.html">Inscrição e reservas</a></p></div>
+      <div><h3>Email</h3><p>eventos@arenavalencia.gg</p></div>
+    </div>
+  </footer>
+
+  <script src="env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
-
-

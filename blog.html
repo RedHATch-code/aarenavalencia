@@ -1,28 +1,96 @@
-﻿<!DOCTYPE html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arena Gaming Valencia — Blog e notícias. Resultados de torneios, atualizações e conteúdos da comunidade." />
   <title>Arena Gaming Valencia | Blog</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" /><link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="bg-grid"></div>
-<header class="topbar"><a class="logo" href="index.html">ARENA <span>VALENCIA</span></a><button class="menu-btn" id="menuBtn">☰</button><nav id="mainNav"><a href="index.html">Home</a><a href="servicos.html">Serviços</a><a href="setup.html">PCs & Setup</a><a href="eventos.html">Eventos</a><a href="reservas.html">Reservas</a><a href="loja.html">Loja</a><a href="galeria.html">Galeria</a><a href="sobre.html">Sobre Nós</a><a href="contactos.html">Contactos</a><a href="login.html">Login</a></nav></header>
-<main class="page-wrap">
-  <section class="page-hero"><p class="eyebrow">Conteúdo & SEO</p><h1>Blog / Notícias</h1><p class="lead">Atualizações da arena, resultados de torneios e conteúdos da comunidade.</p></section>
-  <section class="section"><div class="grid-3">
-    <article class="blog-post"><p class="tag">Notícia</p><h3>Nova temporada de torneios 2026</h3><p>Lançámos um calendário com mais etapas e novos formatos para equipas amadoras.</p><small>Publicado em 18/02/2026</small></article>
-    <article class="blog-post"><p class="tag">Resultados</p><h3>Community Cup: top 3 equipas</h3><p>Resumo dos melhores momentos e das jogadas decisivas da final.</p><small>Publicado em 14/02/2026</small></article>
-    <article class="blog-post"><p class="tag">Update</p><h3>Upgrade de setups concluído</h3><p>Monitores 240Hz e periféricos novos já disponíveis em toda a zona competitiva.</p><small>Publicado em 10/02/2026</small></article>
-  </div></section>
-</main>
-<footer class="site-footer"><div class="footer-grid"><div><h3>Arena Gaming Valencia</h3><p>Notícias da comunidade gamer local.</p></div><div><h3>Ler também</h3><p><a href="eventos.html">Eventos</a></p></div><div><h3>Contacto editorial</h3><p>media@arenavalencia.gg</p></div></div></footer>
-<script src="env.js"></script>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="logo" href="index.html" aria-label="Arena Gaming Valencia — Inicio">ARENA <span>VALENCIA</span></a>
+    <div class="lang-switch">
+      <select id="languageSelect" aria-label="Seleccionar idioma">
+        <option value="es_cast" selected>Castellano</option>
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es_latam">Español (Lat.)</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav id="mainNav" aria-label="Navegación principal">
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="servicos.html" data-i18n="nav_services">Servicios</a>
+      <a href="setup.html" data-i18n="nav_setup">PCs & Setup</a>
+      <a href="eventos.html" data-i18n="nav_events">Eventos</a>
+      <a href="reservas.html" data-i18n="nav_booking">Reservas</a>
+      <a href="loja.html" data-i18n="nav_store">Tienda</a>
+      <a href="galeria.html" data-i18n="nav_gallery">Galería</a>
+      <a href="sobre.html" data-i18n="nav_about">Sobre Nosotros</a>
+      <a href="contactos.html" data-i18n="nav_contact">Contacto</a>
+      <a href="login.html" data-i18n="nav_login" id="navLoginLink">Login</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="page-hero">
+      <p class="eyebrow">Notícias & Updates</p>
+      <h1>Blog / Notícias</h1>
+      <p class="lead">Atualizações da arena, resultados de torneios e conteúdos da comunidade.</p>
+    </section>
+
+    <section class="section reveal">
+      <div class="grid-3">
+        <article class="blog-post">
+          <p class="tag">Notícia</p>
+          <h3>Nova temporada de torneios 2026</h3>
+          <p>Lançámos um calendário com mais etapas e novos formatos para equipas amadoras e profissionais.</p>
+          <small>Publicado em 18/02/2026</small>
+        </article>
+        <article class="blog-post">
+          <p class="tag">Resultados</p>
+          <h3>Community Cup: top 3 equipas</h3>
+          <p>Resumo dos melhores momentos e das jogadas decisivas da final da Community Cup de fevereiro.</p>
+          <small>Publicado em 14/02/2026</small>
+        </article>
+        <article class="blog-post">
+          <p class="tag">Update</p>
+          <h3>Upgrade de setups concluído</h3>
+          <p>Monitores 240Hz e periféricos novos já disponíveis em toda a zona competitiva da Arena.</p>
+          <small>Publicado em 10/02/2026</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="info-box">
+        <h3>Fica a par de tudo</h3>
+        <p>Segue-nos nas redes sociais para notificações de eventos, resultados e promoções exclusivas.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="eventos.html">Ver próximos eventos</a>
+          <a class="btn btn-ghost" href="contactos.html">Contactar redação</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div><h3>Arena Gaming Valencia</h3><p>Notícias da comunidade gamer local.</p></div>
+      <div><h3>Ler também</h3><p><a href="eventos.html">Eventos</a></p><p><a href="sobre.html">Sobre nós</a></p></div>
+      <div><h3>Contacto editorial</h3><p>media@arenavalencia.gg</p></div>
+    </div>
+  </footer>
+
+  <script src="env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
