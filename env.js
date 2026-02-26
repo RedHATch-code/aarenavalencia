@@ -8,7 +8,7 @@ window.SUPABASE_CONFIG = {
   // ── Supabase ──────────────────────────────────────────────────
   // Vai a https://app.supabase.com → o teu projeto → Settings → API
   // Copia "Project URL" para SUPABASE_URL
-  SUPABASE_URL: "",
+  SUPABASE_URL: "https://vglpakdfljeyxxvuoveo.supabase.co",
   SUPABASE_PUBLISHABLE_KEY: "sb_publishable_wL8-DblATn2HzQvPiluvRQ_4BoHORKg",
 
   // ── Pagamentos ────────────────────────────────────────────────
