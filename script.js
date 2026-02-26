@@ -174,9 +174,7 @@ const i18n = {
     setup_card_title: "Setup Pro Arena",
     setup_card_text: "Monitores 240Hz, periféricos premium y máquinas optimizadas para juegos competitivos.",
     setup_cta: "Ver especificaciones",
-    kpi_1: "Jugadores por día",
     kpi_2: "Abierto diariamente",
-    kpi_3: "Eventos al mes",
     events_title: "Próximos Eventos",
     event_tag_1: "Viernes",
     event_tag_2: "Sábado",
@@ -191,7 +189,10 @@ const i18n = {
     footer_links: "Enlaces",
     footer_book: "Reservas",
     footer_blog: "Blog",
-    footer_contact: "Contacto"
+    footer_contact: "Contacto",
+    res_pc_general: "Pc arena general (20 disponibles)",
+    res_pc_rtx: "Pc arena RTX (5 disponibles)",
+    res_console: "Consola (2 disponibles)"
   },
   es_latam: {
     nav_home: "Inicio",
